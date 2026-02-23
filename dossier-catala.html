@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Català A1</title>
+<style>
+:root {
+  --cream:#FDF8F0; --ink:#1A1F35; --indigo:#263266; --indigo2:#3A4A8A;
+  --rust:#B84D1E; --rust2:#E8722E; --gold:#C8821A; --gold2:#F0A830;
+  --sage:#2A6B4A; --sage2:#44A872; --panel:#FFFFFF;
+  --border:#DDD0BE; --borderl:#EEE6D8;
+  --ok:#1A7040; --bad:#C0321E; --neutral:#7A7D8E;
+  --sh:0 2px 8px rgba(26,31,53,.08); --shm:0 4px 20px rgba(26,31,53,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--cream);color:var(--ink);display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sb{width:244px;min-width:244px;background:linear-gradient(170deg,#263266,#1A2252,#131840);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:4px 0 20px rgba(20,24,60,.3)}
+#sb::-webkit-scrollbar{width:3px}
+#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+.brand{padding:26px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.brand h1{font-size:22px;font-weight:bold;color:#fff;font-style:italic}
+.brand h1 span{color:var(--gold2)}
+.brand p{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;font-family:monospace}
+nav{padding:12px 0;flex:1}
+nav a{display:flex;align-items:center;gap:9px;padding:9px 18px;color:rgba(255,255,255,.6);text-decoration:none;font-size:12.5px;transition:all .15s;border-left:3px solid transparent}
+nav a:hover{background:rgba(255,255,255,.08);color:#fff;border-left-color:rgba(200,130,26,.5);padding-left:22px}
+nav a.active{background:rgba(200,130,26,.12);color:#fff;border-left-color:var(--gold2);font-weight:bold}
+.num{font-family:monospace;font-size:10px;background:rgba(255,255,255,.1);border-radius:4px;padding:2px 6px;min-width:26px;text-align:center;color:var(--gold2)}
+nav a.active .num{background:rgba(200,130,26,.3)}
+.scorebox{margin:10px 14px 0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:13px 15px}
+.scorebox .lbl{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;opacity:.55;font-family:monospace;margin-bottom:3px}
+.scorebox strong{display:block;font-size:26px;color:var(--gold2);font-family:monospace;font-weight:700;line-height:1}
+.pbar{width:100%;height:7px;background:rgba(255,255,255,.12);border-radius:4px;margin-top:8px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--sage2),var(--gold2));border-radius:4px;transition:width .5s ease;box-shadow:0 0 8px rgba(200,130,26,.4)}
+
+/* MAIN */
+main{flex:1;padding:48px 48px 100px;max-width:940px}
+
+/* UNIT HEADER */
+.unit{margin-bottom:80px;scroll-margin-top:20px}
+.uhdr{display:flex;align-items:stretch;border-radius:12px;background:#fff;border:1px solid var(--borderl);box-shadow:var(--shm);overflow:hidden;margin-bottom:28px;position:relative}
+.ubar{width:7px;min-width:7px}
+.utitle{padding:20px 22px;flex:1}
+.utitle h2{font-size:23px;color:var(--indigo);font-style:italic;line-height:1.2}
+.utitle p{font-size:12.5px;color:var(--neutral);margin-top:4px}
+.unum{font-size:68px;font-weight:900;font-style:italic;color:rgba(26,31,53,.05);position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;line-height:1}
+
+/* GRAMMAR BOX */
+.gbox{background:#fff;border:1px solid var(--borderl);border-radius:10px;padding:18px 22px;margin-bottom:14px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.gbox::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--rust));opacity:.45}
+.gbox h3{font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--rust);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.gbox h3::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.gbox p,.gbox li{font-size:14px;line-height:1.8;margin-bottom:5px}
+.gbox ul{padding-left:20px}
+.ex{background:linear-gradient(135deg,#FEF8EC,#FAF0D8);border-left:3px solid var(--gold2);padding:9px 14px;border-radius:0 7px 7px 0;font-style:italic;font-size:13.5px;margin-top:10px;color:var(--indigo)}
+
+/* VERB TABLE */
+.vt{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+.vt th{background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:#fff;padding:7px 12px;text-align:left;font-family:monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase}
+.vt th:first-child{border-radius:5px 0 0 0}
+.vt th:last-child{border-radius:0 5px 0 0}
+.vt td{padding:7px 12px;border-bottom:1px solid var(--borderl)}
+.vt tr:nth-child(even) td{background:rgba(38,50,102,.02)}
+.vt .pn{color:var(--neutral);font-style:italic;font-size:13px}
+.vt .fm{font-weight:700;color:var(--rust);font-family:monospace;font-size:13px}
+.vt .eg{color:var(--sage);font-style:italic;font-size:13px}
+
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{background:#F5EFE3;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:13px}
+.tag.r{background:#FDEADE;border-color:#DDA070;color:#7A2000}
+.tag.g{background:#DFF2E8;border-color:#80BCA0;color:#1A5030}
+.tag.i{background:#DDE3F8;border-color:#8898D8;color:#1E2840}
+.tag.o{background:#FEF2D8;border-color:#D0A040;color:#5A3400}
+
+/* LAYOUT */
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:14px 0}
+
+/* EXERCISE */
+.exr{background:#fff;border:1px solid var(--borderl);border-radius:12px;padding:22px 26px;margin-top:18px;box-shadow:var(--sh);position:relative}
+.exr::after{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--indigo2),var(--indigo));border-radius:12px 0 0 12px}
+.elbl{display:inline-flex;align-items:center;background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:rgba(255,255,255,.9);font-family:monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;border-radius:5px;padding:3px 10px;margin-bottom:12px}
+.exr h4{font-size:15px;font-weight:600;color:var(--indigo);margin-bottom:16px;line-height:1.4;font-family:Georgia,serif}
+.exr h4 em{color:var(--rust);font-style:italic;background:rgba(184,77,30,.07);padding:0 3px;border-radius:3px}
+
+/* MC */
+.mcg{margin-bottom:20px}
+.mcq{font-size:14px;color:var(--ink);margin-bottom:9px;padding:7px 13px;background:rgba(38,50,102,.04);border-radius:7px;border-left:3px solid var(--indigo2)}
+.mco{display:flex;align-items:center;gap:10px;padding:9px 15px;border:1.5px solid var(--borderl);border-radius:8px;cursor:pointer;font-size:13.5px;transition:all .14s;user-select:none;background:#fff;margin-bottom:7px}
+.mco:hover{background:#F5EEE0;border-color:var(--gold);transform:translateX(3px)}
+.mco.ok{background:linear-gradient(135deg,#E2F5EB,#D4EFE0);border-color:var(--ok);color:var(--ok);font-weight:600;animation:pop .22s ease}
+.mco.bad{background:linear-gradient(135deg,#FDECEA,#F8D8D5);border-color:var(--bad);color:var(--bad);animation:shake .28s ease}
+.lt{font-family:monospace;font-size:11px;background:var(--borderl);border-radius:4px;padding:2px 6px;min-width:22px;text-align:center;font-weight:700;transition:all .14s}
+.mco:hover .lt{background:var(--gold);color:#fff}
+.mco.ok .lt{background:var(--ok);color:#fff}
+.mco.bad .lt{background:var(--bad);color:#fff}
+
+/* FILL */
+.fr{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;margin-bottom:10px;font-size:14px;line-height:2.4}
+.fr input{border:none;border-bottom:2px solid var(--border);background:transparent;font-family:monospace;font-size:13.5px;color:var(--indigo);width:140px;padding:2px 5px;outline:none;transition:all .18s}
+.fr input:focus{border-color:var(--gold2);background:rgba(200,130,26,.04);border-radius:3px 3px 0 0}
+.fr input.ok{border-color:var(--ok);color:var(--ok);background:linear-gradient(135deg,#E6F8EE,#D6F0E4);border-radius:4px 4px 0 0}
+.fr input.bad{border-color:var(--bad);color:var(--bad);background:linear-gradient(135deg,#FDECEA,#F8DADA);border-radius:4px 4px 0 0}
+
+/* BTN */
+.btn{margin-top:14px;padding:9px 24px;background:linear-gradient(135deg,var(--indigo2),var(--indigo));color:#fff;border:none;border-radius:8px;font-family:Georgia,serif;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s;box-shadow:0 3px 10px rgba(38,50,102,.25)}
+.btn:hover{background:linear-gradient(135deg,#4A5AB0,#3040A0);transform:translateY(-1px);box-shadow:0 5px 15px rgba(38,50,102,.35)}
+.btn:active{transform:scale(.97)}
+
+/* FEEDBACK */
+.fb{margin-top:12px;padding:10px 15px;border-radius:8px;font-size:13.5px;display:none;font-weight:500}
+.fb.ok{background:linear-gradient(135deg,#E4F8EE,#D4F0E4);color:var(--ok);border:1px solid rgba(26,112,64,.2);display:block}
+.fb.part{background:linear-gradient(135deg,#FEF6E4,#FAF0CC);color:#7A4800;border:1px solid rgba(200,130,26,.2);display:block}
+.fb.bad{background:linear-gradient(135deg,#FDECEA,#F8DADA);color:var(--bad);border:1px solid rgba(192,50,30,.2);display:block}
+
+/* RULE BOX */
+.rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.rc{border-radius:9px;padding:14px 16px;font-size:13.5px}
+.rc.ob{background:linear-gradient(135deg,#EAF4FF,#D8ECFF);border:1px solid rgba(100,160,240,.4)}
+.rc.pr{background:linear-gradient(135deg,#FDECEA,#F8DADA);border:1px solid rgba(192,80,60,.25)}
+.rc h4{font-size:10px;font-family:monospace;text-transform:uppercase;margin-bottom:9px;letter-spacing:.05em}
+.rc.ob h4{color:#1A4A80}
+.rc.pr h4{color:var(--bad)}
+.rc ul{padding-left:18px}
+.rc li{margin-bottom:5px;line-height:1.6;font-size:13px}
+
+/* COS GRID */
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.cc{background:linear-gradient(135deg,#F8F4EC,#F0EAD8);border:1px solid var(--borderl);border-radius:8px;padding:9px 6px;text-align:center;font-size:12.5px;line-height:1.35}
+.cc .em{font-size:22px;display:block;margin-bottom:3px}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+
+<aside id="sb">
+  <div class="brand">
+    <h1>Català <span>A1</span></h1>
+    <p>Resum · Exercicis interactius</p>
+  </div>
+  <nav id="snav">
+    <a href="#u1"><span class="num">U1</span> Saludar i presentar-se</a>
+    <a href="#u2"><span class="num">U2</span> Emocions i sensacions</a>
+    <a href="#u3"><span class="num">U3</span> Descriure persones</a>
+    <a href="#u4"><span class="num">U4</span> La ciutat</a>
+    <a href="#u5"><span class="num">U5</span> La rutina diària</a>
+    <a href="#u6"><span class="num">U6</span> Menjar i comprar</a>
+    <a href="#u7"><span class="num">U7</span> Demanar favors</a>
+    <a href="#u8"><span class="num">U8</span> La casa i normes</a>
+    <a href="#u9"><span class="num">U9</span> El cos i la salut</a>
+  </nav>
+  <div class="scorebox">
+    <div class="lbl">Exercicis completats</div>
+    <strong id="gscore">0 / 0</strong>
+    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  </div>
+</aside>
+
+<main>
+
+<!-- U1 -->
+<section class="unit" id="u1">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#E8722E,#B84D1E)"></div>
+    <div class="utitle">
+      <h2>Saludar i Presentar-se</h2>
+      <p>Saludar · Verb ser (sing.) · D'on ets · L'abecedari · Demanar repetició</p>
+    </div>
+    <div class="unum">01</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Saludar i acomiadar-se</h3>
+      <div class="tags">
+        <span class="tag r">Hola!</span><span class="tag r">Bon dia!</span>
+        <span class="tag r">Bona tarda!</span><span class="tag r">Bona nit!</span>
+        <span class="tag g">Adeu!</span><span class="tag g">Fins aviat!</span>
+        <span class="tag g">Fins demà!</span>
+      </div>
+      <div class="ex">– Bon dia! / – Bona tarda! / – Adeu, fins demà!</div>
+    </div>
+    <div class="gbox">
+      <h3>Presentar-se i respondre</h3>
+      <p><strong>Jo soc en Joan.</strong> <span style="color:var(--neutral);font-size:13px">(home → <em>en / el</em>)</span></p>
+      <p><strong>Jo soc la Maria.</strong> <span style="color:var(--neutral);font-size:13px">(dona → <em>la</em>)</span></p>
+      <p style="margin-top:8px"><strong>Com et dius?</strong> → Jo <strong>em dic</strong> Omar.</p>
+      <p><strong>Com es diu</strong> ell? → Ell <strong>es diu</strong> Karim.</p>
+      <div class="ex">– Encantat/Encantada! &nbsp;/&nbsp; Molt de gust!</div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verb SER – singular</h3>
+    <table class="vt">
+      <tr><th>Persona</th><th>Ser</th><th>Exemple</th></tr>
+      <tr><td class="pn">Jo</td><td class="fm">soc</td><td class="eg">Jo soc de Bolívia.</td></tr>
+      <tr><td class="pn">Tu</td><td class="fm">ets</td><td class="eg">Tu ets de Romania?</td></tr>
+      <tr><td class="pn">Ell / Ella</td><td class="fm">és</td><td class="eg">Ella és del Marroc.</td></tr>
+    </table>
+    <div class="ex">– D'on ets? – Soc de Síria. Síria és a Àsia, a l'est del Mediterrani.</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Continents i preposicions</h3>
+      <table class="vt">
+        <tr><th>Continent</th><th>Exemples</th></tr>
+        <tr><td>Àfrica</td><td class="eg">el Marroc, Nigèria, el Senegal</td></tr>
+        <tr><td>Europa</td><td class="eg">Romania, França, Espanya</td></tr>
+        <tr><td>Àsia</td><td class="eg">Síria, Pakistan, la Xina</td></tr>
+        <tr><td>Amèrica</td><td class="eg">Bolívia, Colòmbia, Mèxic</td></tr>
+        <tr><td>Oceania</td><td class="eg">Austràlia, Nova Zelanda</td></tr>
+      </table>
+    </div>
+    <div class="gbox">
+      <h3>Demanar lentitud i repetició</h3>
+      <p>🔄 <strong>M'ho pots repetir, si us plau?</strong></p>
+      <p>🐢 <strong>Més a poc a poc, si us plau!</strong></p>
+      <p>✏️ <strong>Com s'escriu?</strong></p>
+      <div class="div"></div>
+      <h3 style="margin-top:0">Punts cardinals</h3>
+      <div class="tags">
+        <span class="tag">N → nord</span><span class="tag">S → sud</span>
+        <span class="tag">E → est</span><span class="tag">O → oest</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex1a">
+    <div class="elbl">✏️ Exercici 1A · Verb ser</div>
+    <h4>Completa amb <em>soc</em>, <em>ets</em> o <em>és</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="soc"><span>de Nigèria.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="ets"><span>de Polònia?</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="és"><span>de l'Índia.</span></div>
+    <div class="fr"><span>4. Ell ___</span><input data-ans="és"><span>de Mèxic.</span></div>
+    <div class="fr"><span>5. Jo ___</span><input data-ans="soc"><span>d'Espanya.</span></div>
+    <div class="fr"><span>6. Tu ___</span><input data-ans="ets"><span>de França o d'Itàlia?</span></div>
+    <button class="btn" onclick="checkFill('ex1a')">Comprova</button>
+    <div class="fb" id="ex1a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex1b">
+    <div class="elbl">🔘 Exercici 1B · Presentació</div>
+    <h4>Escull la resposta correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">– D'on ets?</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Bé, gràcies.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Soc del Pakistan.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Jo em dic Amina.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">– Com et dius?</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Soc de França.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Molt de gust!</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Jo em dic Carlos.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">– I Bolívia, on és?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És a Amèrica del Sud.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>És al nord d'Europa.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>És a Àsia.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex1c">
+    <div class="elbl">✏️ Exercici 1C · Verb dir-se</div>
+    <h4>Completa amb <em>em dic</em>, <em>et dius</em> o <em>es diu</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="em dic"><span>Fatou.</span></div>
+    <div class="fr"><span>2. Com ___</span><input data-ans="et dius"><span>tu?</span></div>
+    <div class="fr"><span>3. Ell ___</span><input data-ans="es diu"><span>Driss.</span></div>
+    <div class="fr"><span>4. Com ___</span><input data-ans="es diu"><span>ella?</span></div>
+    <button class="btn" onclick="checkFill('ex1c')">Comprova</button>
+    <div class="fb" id="ex1c-fb"></div>
+  </div>
+</section>
+
+<!-- U2 -->
+<section class="unit" id="u2">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#44A872,#2A6B4A)"></div>
+    <div class="utitle">
+      <h2>Emocions i Sensacions</h2>
+      <p>Verb estar · Verb tenir · Perquè · Molt / gaire / gens · Dies de la setmana</p>
+    </div>
+    <div class="unum">02</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Verb ESTAR – emocions (singular)</h3>
+      <table class="vt">
+        <tr><th>Persona</th><th>Estar</th><th>Emocions</th></tr>
+        <tr><td class="pn">Jo</td><td class="fm">estic</td><td class="eg">content/a · trist/a · enfadat/a</td></tr>
+        <tr><td class="pn">Tu</td><td class="fm">estàs</td><td class="eg">content/a · trist/a…</td></tr>
+        <tr><td class="pn">Ell/Ella</td><td class="fm">està</td><td class="eg">content/a · trist/a…</td></tr>
+      </table>
+      <div class="ex">Jo estic content <strong>perquè</strong> aprenc català.</div>
+    </div>
+    <div class="gbox">
+      <h3>Verb TENIR – sensacions (singular)</h3>
+      <table class="vt">
+        <tr><th>Persona</th><th>Tenir</th><th>Sensacions</th></tr>
+        <tr><td class="pn">Jo</td><td class="fm">tinc</td><td class="eg">gana · set · fred · calor · son</td></tr>
+        <tr><td class="pn">Tu</td><td class="fm">tens</td><td class="eg">gana · set · fred…</td></tr>
+        <tr><td class="pn">Ell/Ella</td><td class="fm">té</td><td class="eg">gana · set · fred…</td></tr>
+      </table>
+      <div class="ex">Quan tens fred, va bé posar-se un jersei.</div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Quantificadors: molt · (no)…gaire · (no)…gens (de)</h3>
+    <div class="tags">
+      <span class="tag r">Tinc <strong>molta</strong> gana 🔋🔋🔋</span>
+      <span class="tag o">No tinc <strong>gaire</strong> set 🔋🔋</span>
+      <span class="tag g">No tinc <strong>gens de</strong> fred 🔋</span>
+    </div>
+    <p style="margin-top:10px"><strong>Nota:</strong> "gens" va seguit de <em>de</em> quan introdueix un nom: <em>No tinc <strong>gens de</strong> son.</em></p>
+    <div class="ex">Estic <strong>molt</strong> content. / No estic <strong>gaire</strong> trist. / No estic <strong>gens</strong> enfadat.</div>
+  </div>
+
+  <div class="gbox">
+    <h3>Dies de la setmana</h3>
+    <div class="tags">
+      <span class="tag i">dilluns</span><span class="tag i">dimarts</span><span class="tag i">dimecres</span>
+      <span class="tag i">dijous</span><span class="tag i">divendres</span>
+      <span class="tag o">dissabte</span><span class="tag o">diumenge</span>
+    </div>
+    <div class="ex">El dilluns treballo. El dissabte tinc festa. El diumenge descanso.</div>
+  </div>
+
+  <div class="exr" id="ex2a">
+    <div class="elbl">✏️ Exercici 2A · Verb estar</div>
+    <h4>Completa amb <em>estic</em>, <em>estàs</em> o <em>està</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="estic"><span>content perquè avui és el meu aniversari.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="estàs"><span>trist perquè s'acaben les vacances?</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="està"><span>enfadada perquè el seu equip perd.</span></div>
+    <div class="fr"><span>4. Jo ___</span><input data-ans="estic"><span>cansat perquè treballo molt.</span></div>
+    <div class="fr"><span>5. Ell ___</span><input data-ans="està"><span>content perquè arriba un amic.</span></div>
+    <button class="btn" onclick="checkFill('ex2a')">Comprova</button>
+    <div class="fb" id="ex2a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex2b">
+    <div class="elbl">✏️ Exercici 2B · Verb tenir</div>
+    <h4>Completa amb <em>tinc</em>, <em>tens</em> o <em>té</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="tinc"><span>molt de fred avui.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="tens"><span>molta gana?</span></div>
+    <div class="fr"><span>3. En Pep ___</span><input data-ans="té"><span>molt de son.</span></div>
+    <div class="fr"><span>4. La Nadia ___</span><input data-ans="té"><span>molta set.</span></div>
+    <div class="fr"><span>5. Jo no ___</span><input data-ans="tinc"><span>gens de calor.</span></div>
+    <div class="fr"><span>6. Tu no ___</span><input data-ans="tens"><span>gaire son?</span></div>
+    <button class="btn" onclick="checkFill('ex2b')">Comprova</button>
+    <div class="fb" id="ex2b-fb"></div>
+  </div>
+
+  <div class="exr" id="ex2c">
+    <div class="elbl">🔘 Exercici 2C · Sensacions i consells</div>
+    <h4>Escull el consell adequat.</h4>
+    <div class="mcg">
+      <div class="mcq">Tinc molta set. Què va bé?</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Va bé posar-se un jersei.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Va bé menjar una pasta.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>És important beure aigua.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Tinc molt de fred. Què va bé?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Va molt bé posar-se un jersei o una bufanda.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Va bé prendre una dutxa freda.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Va bé descansar en un sofà.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Tinc molt de son. Què va bé?</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Va bé menjar un gelat.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>És important descansar i dormir en un llit.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Va bé beure cafè calent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- U3 -->
+<section class="unit" id="u3">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#F0A830,#C8821A)"></div>
+    <div class="utitle">
+      <h2>Descriure Persones i Família</h2>
+      <p>Aspecte físic · Verb portar · Roba · Colors · Possessius · Família</p>
+    </div>
+    <div class="unum">03</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Aspecte físic</h3>
+      <div class="tags">
+        <span class="tag r">alt / alta</span><span class="tag r">baix / baixa</span>
+        <span class="tag r">prim / prima</span><span class="tag r">gras / grassa</span>
+        <span class="tag">un noi / una noia</span><span class="tag">un senyor / una senyora</span>
+      </div>
+      <div class="ex">Una noia alta i prima. / Un senyor baix i gras.</div>
+    </div>
+    <div class="gbox">
+      <h3>Colors (concordança de gènere)</h3>
+      <table class="vt">
+        <tr><th>Masculí</th><th>Femení</th></tr>
+        <tr><td>blanc</td><td class="eg">blanca</td></tr>
+        <tr><td>negre</td><td class="eg">negra</td></tr>
+        <tr><td>vermell</td><td class="eg">vermella</td></tr>
+        <tr><td>groc</td><td class="eg">groga</td></tr>
+        <tr><td>verd</td><td class="eg">verda</td></tr>
+        <tr><td>blau</td><td class="eg">blava</td></tr>
+        <tr><td colspan="2" style="color:var(--neutral);font-style:italic;font-size:13px">rosa · taronja → invariables</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verb PORTAR (singular) – roba i complements</h3>
+    <table class="vt">
+      <tr><th>Persona</th><th>Portar</th><th>Exemple</th></tr>
+      <tr><td class="pn">Jo</td><td class="fm">porto</td><td class="eg">Porto uns pantalons blaus i una samarreta blanca.</td></tr>
+      <tr><td class="pn">Tu</td><td class="fm">portes</td><td class="eg">Portes una faldilla vermella.</td></tr>
+      <tr><td class="pn">Ell/Ella</td><td class="fm">porta</td><td class="eg">Porta un jersei verd i una gorra negra.</td></tr>
+    </table>
+    <div class="tags" style="margin-top:10px">
+      <span class="tag">jaqueta</span><span class="tag">camisa</span><span class="tag">jersei</span>
+      <span class="tag">pantalons</span><span class="tag">faldilla</span><span class="tag">samarreta</span>
+      <span class="tag">sabates</span><span class="tag">sandàlies</span><span class="tag">ulleres</span>
+      <span class="tag">bufanda</span><span class="tag">gorra</span><span class="tag">barret</span>
+      <span class="tag">guants</span><span class="tag">corbata</span><span class="tag">bossa</span>
+      <span class="tag">rellotge</span><span class="tag">arracades</span>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Possessius (1a persona singular)</h3>
+    <table class="vt">
+      <tr><th></th><th>Singular</th><th>Plural</th></tr>
+      <tr><td>Masculí</td><td class="fm">el meu germà</td><td class="fm">els meus germans</td></tr>
+      <tr><td>Femení</td><td class="fm">la meva germana</td><td class="fm">les meves germanes</td></tr>
+    </table>
+    <p style="margin-top:10px">Família: el pare · la mare · el marit · la dona · el fill · la filla · el germà · la germana</p>
+    <div class="ex">Ell és Bernat. Ell és <strong>el meu fill</strong>. / Ella és Laura. Ella és <strong>la meva germana</strong>.</div>
+  </div>
+
+  <div class="exr" id="ex3a">
+    <div class="elbl">🔘 Exercici 3A · Colors</div>
+    <h4>Escull la forma correcta del color.</h4>
+    <div class="mcg">
+      <div class="mcq">Una faldilla ___</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>vermell</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>vermella</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>vermelles</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Uns pantalons ___</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>blava</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>blau</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>blaus</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Una camisa ___</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>groga</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>groc</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>grocs</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex3b">
+    <div class="elbl">✏️ Exercici 3B · Possessius</div>
+    <h4>Completa amb <em>el meu / la meva / els meus / les meves</em>.</h4>
+    <div class="fr"><span>1. Ell és Younes. És ___</span><input data-ans="el meu"><span>germà.</span></div>
+    <div class="fr"><span>2. Ella és Fàtima. És ___</span><input data-ans="la meva"><span>mare.</span></div>
+    <div class="fr"><span>3. Aquests nois són ___</span><input data-ans="els meus"><span>fills.</span></div>
+    <div class="fr"><span>4. Aquestes noies són ___</span><input data-ans="les meves"><span>germanes.</span></div>
+    <div class="fr"><span>5. Ell és en Joan. És ___</span><input data-ans="el meu"><span>pare.</span></div>
+    <div class="fr"><span>6. Ella és la Carmen. És ___</span><input data-ans="la meva"><span>filla.</span></div>
+    <button class="btn" onclick="checkFill('ex3b')">Comprova</button>
+    <div class="fb" id="ex3b-fb"></div>
+  </div>
+
+  <div class="exr" id="ex3c">
+    <div class="elbl">✏️ Exercici 3C · Verb portar</div>
+    <h4>Completa amb <em>porto</em>, <em>portes</em> o <em>porta</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="porto"><span>una jaqueta negra.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="portes"><span>ulleres avui?</span></div>
+    <div class="fr"><span>3. Ell ___</span><input data-ans="porta"><span>una corbata vermella.</span></div>
+    <div class="fr"><span>4. Ella ___</span><input data-ans="porta"><span>una bufanda blava.</span></div>
+    <button class="btn" onclick="checkFill('ex3c')">Comprova</button>
+    <div class="fb" id="ex3c-fb"></div>
+  </div>
+</section>
+
+<!-- U4 -->
+<section class="unit" id="u4">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#5080D0,#2A50A8)"></div>
+    <div class="utitle">
+      <h2>La Ciutat i l'Espai</h2>
+      <p>Verb viure · Hi ha / no hi ha cap · Posició · Números 0–9 · Demanar informació</p>
+    </div>
+    <div class="unum">04</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Verb VIURE – singular</h3>
+      <table class="vt">
+        <tr><th>Persona</th><th>Viure</th><th>Exemple</th></tr>
+        <tr><td class="pn">Jo</td><td class="fm">visc</td><td class="eg">Visc al carrer Mallorca.</td></tr>
+        <tr><td class="pn">Tu</td><td class="fm">vius</td><td class="eg">Vius a la plaça Major?</td></tr>
+        <tr><td class="pn">Ell/Ella</td><td class="fm">viu</td><td class="eg">Viu al costat de l'hospital.</td></tr>
+      </table>
+    </div>
+    <div class="gbox">
+      <h3>Hi ha · No hi ha cap</h3>
+      <p>✅ <strong>Hi ha</strong> una farmàcia? → indica existència</p>
+      <p>❌ <strong>No hi ha cap</strong> farmàcia → no existeix</p>
+      <div class="div"></div>
+      <h3 style="margin-top:0">A prop / lluny</h3>
+      <p>El quiosc <strong>és a prop</strong>. / La torre <strong>és lluny</strong>.</p>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Posicions i preposicions de lloc</h3>
+    <div class="tags">
+      <span class="tag">a l'esquerra</span><span class="tag">a la dreta</span>
+      <span class="tag">a dalt</span><span class="tag">a baix</span>
+      <span class="tag">davant (de)</span><span class="tag">darrere (de)</span>
+      <span class="tag">al costat (de)</span><span class="tag">al mig</span>
+      <span class="tag">a prop (de)</span><span class="tag">lluny (de)</span>
+    </div>
+    <div class="ex">– On és el cinema? – Al carrer Estret, davant del supermercat, al costat de la farmàcia.</div>
+  </div>
+
+  <div class="exr" id="ex4a">
+    <div class="elbl">✏️ Exercici 4A · Verb viure</div>
+    <h4>Completa amb <em>visc</em>, <em>vius</em> o <em>viu</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="visc"><span>al carrer del Sol.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="vius"><span>a la plaça de la Reina?</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="viu"><span>a Barcelona.</span></div>
+    <div class="fr"><span>4. Ell ___</span><input data-ans="viu"><span>al costat de l'escola.</span></div>
+    <div class="fr"><span>5. Jo ___</span><input data-ans="visc"><span>lluny del centre.</span></div>
+    <button class="btn" onclick="checkFill('ex4a')">Comprova</button>
+    <div class="fb" id="ex4a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex4b">
+    <div class="elbl">🔘 Exercici 4B · Demanar orientació</div>
+    <h4>Escull la resposta correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">– Si us plau, on és la farmàcia?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És al carrer Nou, davant del parc.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>La farmàcia és molt contenta.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Sí, hi ha una farmàcia a les dotze.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">– Hi ha un hospital a prop?</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>No, no m'agrada l'hospital.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Sí, hi ha un hospital al carrer Major, a la dreta.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>L'hospital viu aquí.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex4c">
+    <div class="elbl">✏️ Exercici 4C · Hi ha / No hi ha cap</div>
+    <h4>Completa amb <em>hi ha</em> o <em>no hi ha cap</em>.</h4>
+    <div class="fr"><span>A Barcelona ___</span><input data-ans="hi ha"><span>molt de trànsit.</span></div>
+    <div class="fr"><span>Aquí ___</span><input data-ans="no hi ha cap"><span>supermercat. Hem d'anar lluny.</span></div>
+    <div class="fr"><span>Al meu carrer ___</span><input data-ans="hi ha"><span>una farmàcia a prop.</span></div>
+    <button class="btn" onclick="checkFill('ex4c')">Comprova</button>
+    <div class="fb" id="ex4c-fb"></div>
+  </div>
+</section>
+
+<!-- U5 -->
+<section class="unit" id="u5">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#C070A0,#903070)"></div>
+    <div class="utitle">
+      <h2>La Rutina Diària</h2>
+      <p>Verb fer (tot) · Mesos · Estacions · Números 10–100 · Verbs quotidians · Abans/ara/després</p>
+    </div>
+    <div class="unum">05</div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verb FER – totes les persones</h3>
+    <table class="vt">
+      <tr><th>Persona</th><th>Fer</th><th>Exemple</th></tr>
+      <tr><td class="pn">Jo</td><td class="fm">faig</td><td class="eg">faig la compra / faig esport</td></tr>
+      <tr><td class="pn">Tu</td><td class="fm">fas</td><td class="eg">fas neteja / fas fotos</td></tr>
+      <tr><td class="pn">Ell/Ella</td><td class="fm">fa</td><td class="eg">fa el dinar / fa fred</td></tr>
+      <tr><td class="pn">Nosaltres</td><td class="fm">fem</td><td class="eg">fem vacances</td></tr>
+      <tr><td class="pn">Vosaltres</td><td class="fm">feu</td><td class="eg">feu la compra</td></tr>
+      <tr><td class="pn">Ells/Elles</td><td class="fm">fan</td><td class="eg">fan el dinar</td></tr>
+    </table>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Mesos i estacions</h3>
+      <table class="vt">
+        <tr><th>Estació</th><th>Mesos</th></tr>
+        <tr><td>Hivern ❄️</td><td class="eg">desembre · gener · febrer</td></tr>
+        <tr><td>Primavera 🌸</td><td class="eg">març · abril · maig</td></tr>
+        <tr><td>Estiu ☀️</td><td class="eg">juny · juliol · agost</td></tr>
+        <tr><td>Tardor 🍂</td><td class="eg">setembre · octubre · novembre</td></tr>
+      </table>
+      <div class="ex">A l'estiu fa molta calor. A l'hivern fa molt de fred.</div>
+    </div>
+    <div class="gbox">
+      <h3>Parts del dia</h3>
+      <table class="vt">
+        <tr><th>Hores</th><th>Part del dia</th></tr>
+        <tr><td>6h–12h</td><td class="eg">matí</td></tr>
+        <tr><td>12h–15h</td><td class="eg">migdia</td></tr>
+        <tr><td>15h–19h</td><td class="eg">tarda</td></tr>
+        <tr><td>19h–21h</td><td class="eg">vespre</td></tr>
+        <tr><td>21h–24h</td><td class="eg">nit</td></tr>
+      </table>
+      <div class="ex">Em llevo a les <strong>7 del matí</strong>. Sopo a les <strong>8 del vespre</strong>.</div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verbs del dia a dia – singular</h3>
+    <table class="vt">
+      <tr><th>Infinitiu</th><th>Jo</th><th>Tu</th><th>Ell/Ella</th></tr>
+      <tr><td>llevar-se</td><td class="fm">em llevo</td><td class="fm">et lleves</td><td class="fm">es lleva</td></tr>
+      <tr><td>dutxar-se</td><td class="fm">em dutxo</td><td class="fm">et dutxes</td><td class="fm">es dutxa</td></tr>
+      <tr><td>esmorzar</td><td class="fm">esmorzo</td><td class="fm">esmorzes</td><td class="fm">esmorza</td></tr>
+      <tr><td>anar</td><td class="fm">vaig</td><td class="fm">vas</td><td class="fm">va</td></tr>
+      <tr><td>treballar</td><td class="fm">treballo</td><td class="fm">treballes</td><td class="fm">treballa</td></tr>
+      <tr><td>dinar</td><td class="fm">dino</td><td class="fm">dines</td><td class="fm">dina</td></tr>
+      <tr><td>berenar</td><td class="fm">bereno</td><td class="fm">berenes</td><td class="fm">berena</td></tr>
+      <tr><td>sopar</td><td class="fm">sopo</td><td class="fm">sopes</td><td class="fm">sopa</td></tr>
+      <tr><td>llegir</td><td class="fm">llegeixo</td><td class="fm">llegeixes</td><td class="fm">llegeix</td></tr>
+      <tr><td>dormir</td><td class="fm">dormo</td><td class="fm">dorms</td><td class="fm">dorm</td></tr>
+    </table>
+    <div class="ex"><strong>Abans</strong> de treballar esmorzo. <strong>Ara</strong> estudio. <strong>Després</strong> de sopar llegeixo.</div>
+  </div>
+
+  <div class="exr" id="ex5a">
+    <div class="elbl">✏️ Exercici 5A · Verb fer</div>
+    <h4>Completa amb la forma correcta de <em>fer</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="faig"><span>la compra cada dissabte.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="fas"><span>esport cada dia?</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="fa"><span>el dinar a les dues.</span></div>
+    <div class="fr"><span>4. Nosaltres ___</span><input data-ans="fem"><span>vacances a l'agost.</span></div>
+    <div class="fr"><span>5. Vosaltres ___</span><input data-ans="feu"><span>moltes fotos.</span></div>
+    <div class="fr"><span>6. Ells ___</span><input data-ans="fan"><span>el llit cada matí.</span></div>
+    <button class="btn" onclick="checkFill('ex5a')">Comprova</button>
+    <div class="fb" id="ex5a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex5b">
+    <div class="elbl">✏️ Exercici 5B · Verbs del dia</div>
+    <h4>Completa amb el verb correcte: <em>em llevo · esmorzo · vaig · treballo · dino · sopo · dormo</em></h4>
+    <div class="fr"><span>A les 6:30h ___</span><input data-ans="em llevo"><span>.</span></div>
+    <div class="fr"><span>A les 7:00h ___</span><input data-ans="esmorzo"><span>pa amb oli.</span></div>
+    <div class="fr"><span>A les 8:00h ___</span><input data-ans="vaig"><span>a treballar.</span></div>
+    <div class="fr"><span>A les 9:00h ___</span><input data-ans="treballo"><span>a l'oficina.</span></div>
+    <div class="fr"><span>A les 14:00h ___</span><input data-ans="dino"><span>amb la família.</span></div>
+    <div class="fr"><span>A les 21:00h ___</span><input data-ans="sopo"><span>a casa.</span></div>
+    <div class="fr"><span>A les 23:00h ___</span><input data-ans="dormo"><span>.</span></div>
+    <button class="btn" onclick="checkFill('ex5b')">Comprova</button>
+    <div class="fb" id="ex5b-fb"></div>
+  </div>
+
+  <!-- FIX: was c,b,c — now a,c,b (distribuïts) -->
+  <div class="exr" id="ex5c">
+    <div class="elbl">🔘 Exercici 5C · Estacions i mesos</div>
+    <h4>Escull la resposta correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">Quin mes és a l'estiu?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Juliol</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Novembre</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Febrer</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Quina estació és a l'octubre?</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Hivern</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Primavera</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Tardor</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Són les 20:30h. Quina part del dia és?</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Tarda</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Vespre</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Migdia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- U6 -->
+<section class="unit" id="u6">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#E07840,#B04820)"></div>
+    <div class="utitle">
+      <h2>Menjar i Comprar</h2>
+      <p>Categories d'aliments · Gustos · Unitats de compra · Menjar · Beure · Voler</p>
+    </div>
+    <div class="unum">06</div>
+  </div>
+
+  <div class="gbox">
+    <h3>Aliments per categories</h3>
+    <div class="tc">
+      <div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin-bottom:6px;text-transform:uppercase">Verdures 🥦</p>
+        <div class="tags"><span class="tag">enciam</span><span class="tag">tomàquet</span><span class="tag">pastanaga</span><span class="tag">col</span><span class="tag">bledes</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Fruita 🍎</p>
+        <div class="tags"><span class="tag">taronja</span><span class="tag">poma</span><span class="tag">plàtan</span><span class="tag">préssec</span><span class="tag">raïm</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Làctics 🥛</p>
+        <div class="tags"><span class="tag">llet</span><span class="tag">formatge</span><span class="tag">iogurt</span><span class="tag">mantega</span><span class="tag">gelat</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Pastisseria 🥐</p>
+        <div class="tags"><span class="tag">croissant</span><span class="tag">magdalenes</span><span class="tag">galetes</span><span class="tag">xocolata</span><span class="tag">pastís</span></div>
+      </div>
+      <div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin-bottom:6px;text-transform:uppercase">Carn 🥩</p>
+        <div class="tags"><span class="tag">pollastre</span><span class="tag">vedella</span><span class="tag">porc</span><span class="tag">xai</span><span class="tag">conill</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Peix i marisc 🐟</p>
+        <div class="tags"><span class="tag">lluç</span><span class="tag">sardines</span><span class="tag">gambes</span><span class="tag">musclos</span><span class="tag">pop</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Llegums i cereals 🌾</p>
+        <div class="tags"><span class="tag">arròs</span><span class="tag">pa</span><span class="tag">llenties</span><span class="tag">fideus</span><span class="tag">mongetes</span></div>
+        <p style="font-size:10px;font-family:monospace;color:var(--rust);margin:10px 0 6px;text-transform:uppercase">Begudes 🥤</p>
+        <div class="tags"><span class="tag">aigua</span><span class="tag">cafè</span><span class="tag">vi</span><span class="tag">cervesa</span><span class="tag">suc de fruita</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Expressar gustos</h3>
+      <p><strong>agrada</strong> (sing.) / <strong>agraden</strong> (plural)</p>
+      <p style="margin-top:6px">T'agrada <em>el vi</em>? / T'agraden <em>les gambes</em>?</p>
+      <div class="tags" style="margin-top:10px">
+        <span class="tag g">m'agrada molt ❤️</span>
+        <span class="tag o">m'agrada poc 🙂</span>
+        <span class="tag r">no m'agrada gens ❌</span>
+      </div>
+      <div class="ex">Les llenties no m'agraden gens. / La xocolata m'agrada molt.</div>
+    </div>
+    <div class="gbox">
+      <h3>Unitats de compra</h3>
+      <table class="vt">
+        <tr><th>Unitat</th><th>Exemple</th></tr>
+        <tr><td>un <strong>quilo</strong> de</td><td class="eg">un quilo de patates</td></tr>
+        <tr><td>una <strong>barra</strong> de</td><td class="eg">dues barres de pa</td></tr>
+        <tr><td>una <strong>ampolla</strong> de/d'</td><td class="eg">una ampolla de vi / d'oli</td></tr>
+        <tr><td>un <strong>bric</strong> de</td><td class="eg">tres brics de llet</td></tr>
+        <tr><td>una <strong>llauna</strong> de</td><td class="eg">quatre llaunes de refresc</td></tr>
+        <tr><td>un <strong>paquet</strong> de</td><td class="eg">un paquet de galetes</td></tr>
+        <tr><td>una <strong>rajola</strong> de</td><td class="eg">una rajola de xocolata</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verbs MENJAR · BEURE · VOLER – totes les persones</h3>
+    <table class="vt">
+      <tr><th>Persona</th><th>Menjar</th><th>Beure</th><th>Voler</th></tr>
+      <tr><td class="pn">Jo</td><td class="fm">menjo</td><td class="fm">bec</td><td class="fm">vull</td></tr>
+      <tr><td class="pn">Tu</td><td class="fm">menges</td><td class="fm">beus</td><td class="fm">vols</td></tr>
+      <tr><td class="pn">Ell/Ella</td><td class="fm">menja</td><td class="fm">beu</td><td class="fm">vol</td></tr>
+      <tr><td class="pn">Nosaltres</td><td class="fm">mengem</td><td class="fm">bevem</td><td class="fm">volem</td></tr>
+      <tr><td class="pn">Vosaltres</td><td class="fm">mengeu</td><td class="fm">beveu</td><td class="fm">voleu</td></tr>
+      <tr><td class="pn">Ells/Elles</td><td class="fm">mengen</td><td class="fm">beuen</td><td class="fm">volen</td></tr>
+    </table>
+    <div class="ex">– Bon dia! Què vol prendre? – Jo <strong>vull</strong> un cafè amb llet i una torrada, si us plau.</div>
+  </div>
+
+  <div class="exr" id="ex6a">
+    <div class="elbl">✏️ Exercici 6A · Menjar, beure, voler</div>
+    <h4>Completa amb la forma correcta del verb entre parèntesis.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="menjo"><span>arròs amb verdures per dinar. (menjar)</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="beus"><span>suc de taronja cada matí? (beure)</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="vol"><span>un quilo de pomes. (voler)</span></div>
+    <div class="fr"><span>4. Nosaltres ___</span><input data-ans="mengem"><span>peix els divendres. (menjar)</span></div>
+    <div class="fr"><span>5. Ells ___</span><input data-ans="beuen"><span>cervesa al vespre. (beure)</span></div>
+    <div class="fr"><span>6. Vosaltres ___</span><input data-ans="voleu"><span>pa o arròs? (voler)</span></div>
+    <button class="btn" onclick="checkFill('ex6a')">Comprova</button>
+    <div class="fb" id="ex6a-fb"></div>
+  </div>
+
+  <!-- FIX: distribuïdes c,a,b -->
+  <div class="exr" id="ex6b">
+    <div class="elbl">🔘 Exercici 6B · Unitats de compra</div>
+    <h4>Escull la unitat de compra correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">Vull comprar vi.</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Vull un bric de vi.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Vull una llauna de vi.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Vull una ampolla de vi.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Vull comprar llet.</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Vull un bric de llet.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Vull un quilo de llet.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Vull una barra de llet.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Vull comprar patates.</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Vull dues ampolles de patates.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Vull dos quilos de patates.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Vull una rajola de patates.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex6c">
+    <div class="elbl">✏️ Exercici 6C · Gustos</div>
+    <h4>Completa amb <em>m'agrada</em> o <em>m'agraden</em>.</h4>
+    <div class="fr"><span>1. ___</span><input data-ans="m'agrada"><span>molt la xocolata.</span></div>
+    <div class="fr"><span>2. No ___</span><input data-ans="m'agraden"><span>gens les bledes.</span></div>
+    <div class="fr"><span>3. ___</span><input data-ans="m'agraden"><span>molt les gambes.</span></div>
+    <div class="fr"><span>4. No ___</span><input data-ans="m'agrada"><span>gaire la llet.</span></div>
+    <button class="btn" onclick="checkFill('ex6c')">Comprova</button>
+    <div class="fb" id="ex6c-fb"></div>
+  </div>
+</section>
+
+<!-- U7 -->
+<section class="unit" id="u7">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#40A890,#208070)"></div>
+    <div class="utitle">
+      <h2>Demanar Favors i Orientar-se</h2>
+      <p>Dir on soc i on vull anar · Taxi · Les hores · Comparacions · Demanar objectes · Oficis</p>
+    </div>
+    <div class="unum">07</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Dir on soc i on vull anar</h3>
+      <table class="vt">
+        <tr><th>Verb</th><th>Jo</th><th>Ell/Ella</th></tr>
+        <tr><td>ser</td><td class="fm">soc al/a la…</td><td class="fm">és al/a la…</td></tr>
+        <tr><td>voler</td><td class="fm">vull anar a/al…</td><td class="fm">vol anar a/al…</td></tr>
+      </table>
+      <div class="ex">Soc al carrer del Sol i vull anar a l'hospital.</div>
+    </div>
+    <div class="gbox">
+      <h3>Demanar i deixar objectes</h3>
+      <p><strong>Em deixes</strong> la bicicleta, si us plau?</p>
+      <p><strong>Pots deixar-me</strong> un paraigua?</p>
+      <div class="tags" style="margin-top:10px">
+        <span class="tag g">Amb molt de gust. ✓</span>
+        <span class="tag g">Sí, cap problema. ✓</span>
+        <span class="tag r">Ho sento, no el/la tinc. ✗</span>
+        <span class="tag r">Ho sento, no en tinc. ✗</span>
+      </div>
+      <p style="margin-top:8px;font-size:13px"><em>el/la → objecte concret · en → quantitat</em></p>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Comparacions d'hora</h3>
+    <div class="tags">
+      <span class="tag r">més d'hora que</span>
+      <span class="tag o">a la mateixa hora que</span>
+      <span class="tag i">més tard que</span>
+    </div>
+    <div class="ex">Jo em llevo <strong>més d'hora que</strong> la Maria. / Jo dino <strong>a la mateixa hora que</strong> en Joan.</div>
+  </div>
+
+  <div class="gbox">
+    <h3>Oficis i accions</h3>
+    <table class="vt">
+      <tr><th>Ofici</th><th>Acció</th></tr>
+      <tr><td>el pintor / la pintora</td><td class="eg">pinta la paret</td></tr>
+      <tr><td>l'electricista</td><td class="eg">arregla el llum</td></tr>
+      <tr><td>el pagès / la pagesa</td><td class="eg">treballa al camp</td></tr>
+      <tr><td>el mestre / la mestra</td><td class="eg">ensenya a l'escola</td></tr>
+      <tr><td>el metge / la metgessa</td><td class="eg">treballa a l'hospital, cura els pacients</td></tr>
+      <tr><td>el cuiner / la cuinera</td><td class="eg">cuina al restaurant</td></tr>
+      <tr><td>el cambrer / la cambrera</td><td class="eg">porta plats i begudes</td></tr>
+      <tr><td>el conductor / la conductora</td><td class="eg">condueix l'autobús</td></tr>
+      <tr><td>el dependent / la dependent</td><td class="eg">ven roba i sabates</td></tr>
+    </table>
+  </div>
+
+  <div class="exr" id="ex7a">
+    <div class="elbl">✏️ Exercici 7A · Oficis</div>
+    <h4>Completa amb el verb correcte: <em>pinta · arregla · ensenya · cuina · porta · condueix · cura</em></h4>
+    <div class="fr"><span>1. El pintor ___</span><input data-ans="pinta"><span>la paret.</span></div>
+    <div class="fr"><span>2. L'electricista ___</span><input data-ans="arregla"><span>el llum.</span></div>
+    <div class="fr"><span>3. La mestra ___</span><input data-ans="ensenya"><span>els alumnes.</span></div>
+    <div class="fr"><span>4. La cuinera ___</span><input data-ans="cuina"><span>al restaurant.</span></div>
+    <div class="fr"><span>5. El cambrer ___</span><input data-ans="porta"><span>els plats.</span></div>
+    <div class="fr"><span>6. El conductor ___</span><input data-ans="condueix"><span>l'autobús.</span></div>
+    <div class="fr"><span>7. El metge ___</span><input data-ans="cura"><span>els pacients.</span></div>
+    <button class="btn" onclick="checkFill('ex7a')">Comprova</button>
+    <div class="fb" id="ex7a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex7b">
+    <div class="elbl">🔘 Exercici 7B · Demanar favors</div>
+    <h4>Escull la resposta correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">– Em deixes la bicicleta, si us plau?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Sí, amb molt de gust!</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>La bicicleta és vermella.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Vull anar a l'hospital.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">– Pots deixar-me un paraigua? El meu és a casa.</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>El paraigua és blau.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Ho sento, no en tinc.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Soc al carrer Major.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex7c">
+    <div class="elbl">✏️ Exercici 7C · On soc / on vull anar</div>
+    <h4>Completa amb la forma correcta de <em>ser</em> o <em>voler</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="soc"><span>al carrer del Sol i ___</span><input data-ans="vull"><span>anar a l'hospital.</span></div>
+    <div class="fr"><span>2. Ella ___</span><input data-ans="és"><span>a la plaça Major i ___</span><input data-ans="vol"><span>anar al teatre.</span></div>
+    <button class="btn" onclick="checkFill('ex7c')">Comprova</button>
+    <div class="fb" id="ex7c-fb"></div>
+  </div>
+</section>
+
+<!-- U8 -->
+<section class="unit" id="u8">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#7060C0,#4840A0)"></div>
+    <div class="utitle">
+      <h2>La Casa i les Normes</h2>
+      <p>Ordinals · Ordre d'accions · Obligació i prohibició · Parts de la casa · Mobles · Orientació</p>
+    </div>
+    <div class="unum">08</div>
+  </div>
+
+  <div class="tc">
+    <div class="gbox">
+      <h3>Números ordinals</h3>
+      <table class="vt">
+        <tr><th>Masculí</th><th>Femení</th></tr>
+        <tr><td class="fm">primer</td><td class="fm">primera</td></tr>
+        <tr><td class="fm">segon</td><td class="fm">segona</td></tr>
+        <tr><td class="fm">tercer</td><td class="fm">tercera</td></tr>
+        <tr><td class="fm">quart</td><td class="fm">quarta</td></tr>
+        <tr><td class="fm">cinquè</td><td class="fm">cinquena</td></tr>
+        <tr><td class="fm">sisè</td><td class="fm">sisena</td></tr>
+        <tr><td class="fm">setè</td><td class="fm">setena</td></tr>
+        <tr><td class="fm">vuitè</td><td class="fm">vuitena</td></tr>
+        <tr><td class="fm">novè</td><td class="fm">novena</td></tr>
+        <tr><td class="fm">desè</td><td class="fm">desena</td></tr>
+      </table>
+      <div class="ex">La Berta és la <strong>primera</strong>. / El Mamadí és el <strong>tercer</strong>.</div>
+    </div>
+    <div class="gbox">
+      <h3>Expressions d'ordre temporal</h3>
+      <div class="tags">
+        <span class="tag r">En primer lloc,…</span>
+        <span class="tag o">En segon lloc,…</span>
+        <span class="tag i">En tercer lloc,…</span>
+        <span class="tag g">Finalment,…</span>
+        <span class="tag">Després,…</span>
+        <span class="tag">A continuació,…</span>
+      </div>
+      <div class="ex">En primer lloc, es renta la roba. En segon lloc, s'estén. Finalment, es desa.</div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Obligació i Prohibició</h3>
+    <div class="rb">
+      <div class="rc ob">
+        <h4>✅ Obligació — cal fer-ho</h4>
+        <ul>
+          <li><strong>S'ha de</strong> + infinitiu</li>
+          <li><strong>És obligatori</strong> + infinitiu</li>
+          <li><strong>Cal</strong> + infinitiu</li>
+        </ul>
+        <div style="margin-top:9px;font-size:13px;line-height:1.7">S'ha de circular per la dreta.<br>És obligatori portar casc.<br>Cal tenir el carnet de conduir.</div>
+      </div>
+      <div class="rc pr">
+        <h4>🚫 Prohibició — no es pot fer</h4>
+        <ul>
+          <li><strong>Està prohibit</strong> + infinitiu</li>
+          <li><strong>No s'ha de</strong> + infinitiu</li>
+          <li><strong>No es pot</strong> + infinitiu</li>
+        </ul>
+        <div style="margin-top:9px;font-size:13px;line-height:1.7">Està prohibit fumar aquí.<br>No s'ha de tirar papers a terra.<br>No es pot circular per aquí.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Parts de la casa i accions</h3>
+    <table class="vt">
+      <tr><th>Espai</th><th>Acció principal</th></tr>
+      <tr><td>el rebedor</td><td class="eg">rebre les persones que arriben, deixar les claus</td></tr>
+      <tr><td>la cuina</td><td class="eg">preparar el menjar, cuinar</td></tr>
+      <tr><td>el menjador</td><td class="eg">menjar, reunir-se la família</td></tr>
+      <tr><td>la sala d'estar</td><td class="eg">xerrar, mirar la televisió, descansar</td></tr>
+      <tr><td>el dormitori</td><td class="eg">dormir, descansar a la nit</td></tr>
+      <tr><td>el bany</td><td class="eg">dutxar-se, rentar-se, fer la higiene</td></tr>
+      <tr><td>l'estudi</td><td class="eg">llegir, estudiar, treballar</td></tr>
+      <tr><td>la terrassa</td><td class="eg">tenir plantes, prendre l'aire, estendre la roba</td></tr>
+      <tr><td>el balcó</td><td class="eg">prendre l'aire, mirar el carrer</td></tr>
+    </table>
+  </div>
+
+  <div class="gbox">
+    <h3>Orientació: indicar el camí</h3>
+    <p style="margin-bottom:8px"><strong>Com s'hi va, d'aquí a…?</strong></p>
+    <div class="tags">
+      <span class="tag">S'ha de seguir pel carrer…</span>
+      <span class="tag">S'ha de tombar a la dreta / esquerra</span>
+      <span class="tag">És davant de…</span>
+      <span class="tag">cap amunt / cap avall</span>
+    </div>
+    <div class="ex">– Com s'hi va, a correus? – Segueix pel carrer Estret, tomba a l'esquerra. És davant del parc.</div>
+  </div>
+
+  <div class="exr" id="ex8a">
+    <div class="elbl">✏️ Exercici 8A · Ordinals</div>
+    <h4>Completa amb l'ordinal correcte (masculí o femení).</h4>
+    <div class="fr"><span>1. La Berta és la ___</span><input data-ans="primera"><span>(1a).</span></div>
+    <div class="fr"><span>2. El Mamadí és el ___</span><input data-ans="tercer"><span>(3r).</span></div>
+    <div class="fr"><span>3. Visc al ___</span><input data-ans="cinquè"><span>(5è) pis.</span></div>
+    <div class="fr"><span>4. Avui és la ___</span><input data-ans="segona"><span>(2a) classe.</span></div>
+    <div class="fr"><span>5. Agafa el ___</span><input data-ans="quart"><span>(4t) carrer a la dreta.</span></div>
+    <button class="btn" onclick="checkFill('ex8a')">Comprova</button>
+    <div class="fb" id="ex8a-fb"></div>
+  </div>
+
+  <div class="exr" id="ex8b">
+    <div class="elbl">🔘 Exercici 8B · Obligació i prohibició</div>
+    <h4>Escull la frase correcta per a cada situació.</h4>
+    <div class="mcg">
+      <div class="mcq">⛽ A les gasolineres…</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Està prohibit comprar gasolina.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Està prohibit fumar.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>S'ha de portar bicicleta.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">🪖 A l'obra…</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És obligatori portar casc i calçat de seguretat.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Està prohibit portar casc.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>No s'ha de treballar amb guants.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">🚗 A la carretera…</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Està prohibit circular.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>No s'ha de posar el cinturó de seguretat.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>S'ha de respectar els límits de velocitat.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex8c">
+    <div class="elbl">✏️ Exercici 8C · Parts de la casa</div>
+    <h4>On fem cada cosa? Completa amb l'espai correcte.</h4>
+    <div class="fr"><span>1. Cuino a ___</span><input data-ans="la cuina"><span>.</span></div>
+    <div class="fr"><span>2. Dormo a ___</span><input data-ans="el dormitori"><span>.</span></div>
+    <div class="fr"><span>3. Em dutxo a ___</span><input data-ans="el bany"><span>.</span></div>
+    <div class="fr"><span>4. Estudio a ___</span><input data-ans="l'estudi"><span>.</span></div>
+    <div class="fr"><span>5. Menjo a ___</span><input data-ans="el menjador"><span>.</span></div>
+    <div class="fr"><span>6. Prenc l'aire a ___</span><input data-ans="la terrassa"><span>.</span></div>
+    <button class="btn" onclick="checkFill('ex8c')">Comprova</button>
+    <div class="fb" id="ex8c-fb"></div>
+  </div>
+</section>
+
+<!-- U9 -->
+<section class="unit" id="u9">
+  <div class="uhdr">
+    <div class="ubar" style="background:linear-gradient(180deg,#D04060,#A02040)"></div>
+    <div class="utitle">
+      <h2>El Cos i la Salut</h2>
+      <p>Parts del cos · Verb posar-se · Present vs. Passat Perfet · Tinc mal de… · Demanar consell</p>
+    </div>
+    <div class="unum">09</div>
+  </div>
+
+  <div class="gbox">
+    <h3>Parts del cos</h3>
+    <div class="cg">
+      <div class="cc"><span class="em">🧠</span>el cap</div>
+      <div class="cc"><span class="em">👀</span>els ulls</div>
+      <div class="cc"><span class="em">👃</span>el nas</div>
+      <div class="cc"><span class="em">👄</span>la boca</div>
+      <div class="cc"><span class="em">👂</span>les orelles</div>
+      <div class="cc"><span class="em">🦷</span>les dents</div>
+      <div class="cc"><span class="em">🦴</span>el coll</div>
+      <div class="cc"><span class="em">🔙</span>l'esquena</div>
+      <div class="cc"><span class="em">💪</span>el braç</div>
+      <div class="cc"><span class="em">🤚</span>la mà · el dit</div>
+      <div class="cc"><span class="em">🫁</span>el pit</div>
+      <div class="cc"><span class="em">🫃</span>la panxa · el melic</div>
+      <div class="cc"><span class="em">🦵</span>la cama · el genoll</div>
+      <div class="cc"><span class="em">🦶</span>el peu · el turmell</div>
+    </div>
+  </div>
+
+  <div class="gbox">
+    <h3>Verb POSAR-SE – totes les persones</h3>
+    <table class="vt">
+      <tr><th>Persona</th><th>Posar-se</th><th>Exemple</th></tr>
+      <tr><td class="pn">Jo</td><td class="fm">em poso</td><td class="eg">Jo em poso les ulleres als ulls.</td></tr>
+      <tr><td class="pn">Tu</td><td class="fm">et poses</td><td class="eg">Tu et poses el casc al cap.</td></tr>
+      <tr><td class="pn">Ell/Ella</td><td class="fm">es posa</td><td class="eg">Ella es posa l'anell al dit.</td></tr>
+      <tr><td class="pn">Nosaltres</td><td class="fm">ens posem</td><td class="eg">Ens posem la motxilla a l'esquena.</td></tr>
+      <tr><td class="pn">Vosaltres</td><td class="fm">us poseu</td><td class="eg">Us poseu els guants a les mans.</td></tr>
+      <tr><td class="pn">Ells/Elles</td><td class="fm">es posen</td><td class="eg">Es posen els patins als peus.</td></tr>
+    </table>
+  </div>
+
+  <div class="gbox">
+    <h3>Present vs. Passat Perfet Compost</h3>
+    <table class="vt">
+      <tr><th>Present (ara, avui)</th><th>Passat Perfet (ja ha passat)</th></tr>
+      <tr><td class="eg">Ara <strong>estudio</strong> català.</td><td class="eg">Aquest matí <strong>he estudiat</strong> català.</td></tr>
+      <tr><td class="eg">Ara <strong>treballo</strong>.</td><td class="eg">Aquesta setmana <strong>he treballat</strong> molt.</td></tr>
+      <tr><td class="eg">Ara <strong>menjo</strong>.</td><td class="eg">Ahir <strong>he menjat</strong> arròs.</td></tr>
+      <tr><td class="eg">Ara <strong>vaig</strong> al mercat.</td><td class="eg">Aquest cap de setmana <strong>he anat</strong> al mercat.</td></tr>
+    </table>
+    <div class="ex">Formació: <strong>he / has / ha / hem / heu / han</strong> + participi<br>
+    -ar → <strong>-at</strong> · -ir → <strong>-it</strong> · -re → <strong>-ut</strong><br>
+    Irregulars: fer → <strong>fet</strong> · anar → <strong>anat</strong> · venir → <strong>vingut</strong></div>
+  </div>
+
+  <div class="gbox">
+    <h3>Tinc mal de… + perquè + consell</h3>
+    <table class="vt">
+      <tr><th>Indisposició</th><th>Causa</th><th>Consell</th></tr>
+      <tr><td>mal de cap</td><td class="eg">he estudiat molt</td><td class="eg">és bo passejar una estona</td></tr>
+      <tr><td>mal de panxa</td><td class="eg">he menjat molts dolços</td><td class="eg">és aconsellable menjar coses lleugeres</td></tr>
+      <tr><td>mal d'esquena</td><td class="eg">he carregat coses pesades</td><td class="eg">és bo no carregar pes</td></tr>
+      <tr><td>febre</td><td class="eg">he passat fred</td><td class="eg">és bo anar al metge</td></tr>
+      <tr><td>cansament</td><td class="eg">he treballat molt</td><td class="eg">és bo descansar una mica</td></tr>
+      <tr><td>set</td><td class="eg">he caminat molt</td><td class="eg">és bo beure aigua</td></tr>
+      <tr><td>mareig</td><td class="eg">he anat amb barca</td><td class="eg">és bo estirar-se al llit</td></tr>
+    </table>
+    <div class="ex">Tinc mal de cap <strong>perquè</strong> he estudiat molt. <strong>És bo</strong> passejar una estona.</div>
+  </div>
+
+  <div class="exr" id="ex9a">
+    <div class="elbl">✏️ Exercici 9A · Verb posar-se</div>
+    <h4>Completa amb la forma correcta de <em>posar-se</em>.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="em poso"><span>les ulleres als ulls.</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="et poses"><span>el casc al cap.</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="es posa"><span>l'anell al dit.</span></div>
+    <div class="fr"><span>4. Nosaltres ___</span><input data-ans="ens posem"><span>la motxilla a l'esquena.</span></div>
+    <div class="fr"><span>5. Ells ___</span><input data-ans="es posen"><span>els patins als peus.</span></div>
+    <button class="btn" onclick="checkFill('ex9a')">Comprova</button>
+    <div class="fb" id="ex9a-fb"></div>
+  </div>
+
+  <!-- FIX: was a,a,c — ara b,c,a -->
+  <div class="exr" id="ex9b">
+    <div class="elbl">🔘 Exercici 9B · Present o passat perfet</div>
+    <h4>Escull la forma correcta.</h4>
+    <div class="mcg">
+      <div class="mcq">Ara ___ (estudiar) català.</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Ara he estudiat català.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Ara estudio català.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Ara estudies català.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Ahir ___ (menjar) arròs amb verdures.</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Ahir menjo arròs amb verdures.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Ahir menjava arròs amb verdures.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Ahir he menjat arròs amb verdures.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Aquesta setmana ___ (treballar) molt.</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>Aquesta setmana he treballat molt.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>Aquesta setmana treballo molt.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>Aquesta setmana has treballat molt.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exr" id="ex9c">
+    <div class="elbl">✏️ Exercici 9C · Passat perfet – forma</div>
+    <h4>Completa amb el passat perfet correcte.</h4>
+    <div class="fr"><span>1. Jo ___</span><input data-ans="he menjat"><span>peix ahir. (menjar)</span></div>
+    <div class="fr"><span>2. Tu ___</span><input data-ans="has treballat"><span>molt avui. (treballar)</span></div>
+    <div class="fr"><span>3. Ella ___</span><input data-ans="ha anat"><span>al mercat. (anar)</span></div>
+    <div class="fr"><span>4. Nosaltres ___</span><input data-ans="hem comprat"><span>roba nova. (comprar)</span></div>
+    <div class="fr"><span>5. Ells ___</span><input data-ans="han fet"><span>el dinar. (fer)</span></div>
+    <button class="btn" onclick="checkFill('ex9c')">Comprova</button>
+    <div class="fb" id="ex9c-fb"></div>
+  </div>
+
+  <!-- FIX: respostes b,a,c (distribuïdes) -->
+  <div class="exr" id="ex9d">
+    <div class="elbl">🔘 Exercici 9D · Tinc mal de… + consell</div>
+    <h4>Relaciona la indisposició amb el consell correcte.</h4>
+    <div class="mcg">
+      <div class="mcq">Tinc mal de cap perquè he estudiat molt. Què és bo fer?</div>
+      <div data-correct="b">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És bo anar al dentista.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>És bo passejar una estona.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>És bo menjar molts dolços.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Estic molt cansat/da perquè he treballat molt. Què és bo?</div>
+      <div data-correct="a">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És bo descansar una mica.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>És bo fer esport intens.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>És bo beure molta cervesa.</div>
+      </div>
+    </div>
+    <div class="mcg">
+      <div class="mcq">Tinc febre perquè he passat fred. Què és bo?</div>
+      <div data-correct="c">
+        <div class="mco" onclick="checkMC(this)"><span class="lt">a</span>És bo dutxar-se amb aigua freda.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">b</span>És bo carregar coses pesades.</div>
+        <div class="mco" onclick="checkMC(this)"><span class="lt">c</span>És bo anar al metge.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIX: feedback div present -->
+  <div class="exr" id="ex9e">
+    <div class="elbl">✏️ Exercici 9E · Demanar consell</div>
+    <h4>Completa la resposta amb el consell adequat (infinitiu).</h4>
+    <div class="fr"><span>1. Tinc molta set. – T'aconsello ___</span><input data-ans="beure"><span>molta aigua.</span></div>
+    <div class="fr"><span>2. Tinc mal de panxa. – T'aconsello ___</span><input data-ans="menjar"><span>coses lleugeres.</span></div>
+    <div class="fr"><span>3. Em fa mal un queixal. – T'aconsello ___</span><input data-ans="anar"><span>al dentista.</span></div>
+    <div class="fr"><span>4. Estic marejat. – T'aconsello ___</span><input data-ans="estirar-te"><span>al llit.</span></div>
+    <button class="btn" onclick="checkFill('ex9e')">Comprova</button>
+    <div class="fb" id="ex9e-fb"></div>
+  </div>
+
+</section>
+</main>
+
+<script>
+// SCORE
+let total = 0, done = 0;
+function recalc() {
+  total = document.querySelectorAll('[data-correct]').length +
+          document.querySelectorAll('[id^="ex"] .btn').length;
+  upd();
+}
+function upd() {
+  document.getElementById('gscore').textContent = done + ' / ' + total;
+  var pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('pfill').style.width = pct + '%';
+}
+
+// MC
+var mcDone = new WeakSet();
+function checkMC(opt) {
+  var grp = opt.parentElement;
+  if (!grp.dataset.correct) return;
+  if (mcDone.has(grp)) return;
+  mcDone.add(grp);
+  done++;
+  var correct = grp.dataset.correct;
+  var letter = opt.querySelector('.lt').textContent.trim();
+  grp.querySelectorAll('.mco').forEach(function(o) {
+    var l = o.querySelector('.lt').textContent.trim();
+    if (l === correct) o.classList.add('ok');
+    else if (o === opt) o.classList.add('bad');
+  });
+  upd();
+}
+
+// FILL
+var fillDone = {};
+function norm(s) {
+  return s.trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/['\u2018\u2019\u201b]/g,"'");
+}
+function checkFill(id) {
+  if (fillDone[id]) return;
+  fillDone[id] = true;
+  done++;
+  var ex = document.getElementById(id);
+  var inputs = ex.querySelectorAll('input[data-ans]');
+  var ok = 0;
+  inputs.forEach(function(inp) {
+    var isOk = norm(inp.value) === norm(inp.dataset.ans);
+    inp.classList.toggle('ok', isOk);
+    inp.classList.toggle('bad', !isOk);
+    if (!isOk) inp.placeholder = inp.dataset.ans;
+    if (isOk) ok++;
+  });
+  var fb = document.getElementById(id + '-fb');
+  if (ok === inputs.length) {
+    fb.className = 'fb ok';
+    fb.textContent = '\u2705 Excel\u00b7lent! Totes correctes (' + ok + '/' + inputs.length + ').';
+  } else if (ok > 0) {
+    fb.className = 'fb part';
+    fb.textContent = '\ud83d\udfe1 ' + ok + ' de ' + inputs.length + ' correctes. Les respostes apareixen als camps incorrectes.';
+  } else {
+    fb.className = 'fb bad';
+    fb.textContent = '\u274c Cap correcta. Revisa la gramàtica i torna-ho a intentar.';
+  }
+  upd();
+}
+
+// NAV
+var links = document.querySelectorAll('#snav a');
+var units = Array.from(document.querySelectorAll('.unit'));
+function updNav() {
+  var cur = units[0].id;
+  units.forEach(function(u) {
+    if (u.getBoundingClientRect().top <= window.innerHeight * 0.45) cur = u.id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}
+window.addEventListener('scroll', updNav, {passive:true});
+updNav();
+recalc();
+</script>
+</body>
+</html>
