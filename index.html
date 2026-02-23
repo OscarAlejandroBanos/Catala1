@@ -52,9 +52,9 @@
 
     /* ── Portada image ── */
     .portada-wrap {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       opacity: 0;
-      animation: riseIn 1s .7s cubic-bezier(.22,1,.36,1) forwards;
+      animation: fadeUp 1s 1.6s cubic-bezier(.22,1,.36,1) forwards;
     }
     .portada-img {
       width: 320px;
@@ -131,10 +131,6 @@
 <canvas id="cosmos"></canvas>
 
 <div class="wrapper">
-  <div class="portada-wrap">
-    <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
-  </div>
-
   <div class="top-rule"></div>
   <p class="eyebrow">Llengua &amp; Cultura &nbsp;·&nbsp; Curs Inicial</p>
   <div class="title-wrap">
@@ -151,6 +147,10 @@
       <div class="orn-diamond sm"></div>
     </div>
     <div class="orn-line"></div>
+  </div>
+
+  <div class="portada-wrap">
+    <img src="imatges/portada.png" alt="Portada Català 1" class="portada-img"/>
   </div>
 
   <a class="dossier-card" href="dossier-catala.html">
