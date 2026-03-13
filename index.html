@@ -53,7 +53,11 @@
     /* ── Portada + shield row ── */
     .portada-game-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.5rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp 1s 1.6s cubic-bezier(.22,1,.36,1) forwards;width:100%;}
     @media(max-width:560px){.portada-game-row{flex-direction:column;gap:2rem;}}
-    .portada-wrap{flex-shrink:0;}
+    .portada-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
+    .portada-label{font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.48em;color:var(--gold-dk);text-transform:uppercase;margin-bottom:1.2rem;text-align:center;}
+    .portada-link{display:block;position:relative;cursor:none;}
+    .portada-link::after{content:'⬇ PDF';position:absolute;bottom:10px;left:50%;transform:translateX(-50%) translateY(8px);font-family:'Cinzel Decorative',serif;font-size:.55rem;letter-spacing:.3em;color:var(--gold-lt);background:rgba(6,6,13,.85);padding:.35em .9em;border:1px solid rgba(201,168,76,.3);opacity:0;transition:opacity .4s,transform .4s;pointer-events:none;white-space:nowrap;}
+    .portada-link:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
     .portada-img {
       width: 230px;
       max-width: 42vw;
@@ -63,7 +67,9 @@
         0 0 0 1px rgba(201,168,76,.2),
         0 12px 50px rgba(0,0,0,.7),
         0 0 60px rgba(201,168,76,.06);
+      transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;
     }
+    .portada-link:hover .portada-img{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(201,168,76,.35),0 18px 60px rgba(0,0,0,.8),0 0 80px rgba(201,168,76,.12);}
     @media(max-width:560px){.portada-img{width:260px;max-width:80vw;}}
 
     /* ── Header text ── */
@@ -169,7 +175,10 @@
 
   <div class="portada-game-row">
     <div class="portada-wrap">
-      <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
+      <p class="portada-label">Dossier del Curs</p>
+      <a class="portada-link" href="dossier.pdf" download>
+        <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
+      </a>
     </div>
     <div class="game-section">
       <p class="game-eyebrow">Videojoc</p>
@@ -241,7 +250,7 @@
     <div class="card-title">Dossier de Català</div>
     <div class="card-divider"></div>
     <p class="card-desc">Tots els continguts, exercicis i recursos del curs reunits en un únic document de referència imprescindible.</p>
-    <div class="card-cta"><div class="cta-line"></div>Accedeix al dossier</div>
+    <div class="card-cta"><div class="cta-line"></div>Accedeix al dossier interactiu</div>
   </a>
 
   <footer>
@@ -262,6 +271,47 @@ document.querySelectorAll('a').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.classList.add('hov');cRng.classList.add('hov');});
   el.addEventListener('mouseleave',()=>{cur.classList.remove('hov');cRng.classList.remove('hov');});
 });
+
+/* ═══════════════════════════════════════
+   SWORD SOUND ON SHIELD HOVER
+═══════════════════════════════════════ */
+(function(){
+  let audioCtx=null;
+  function playSwordSound(){
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const ctx=audioCtx, now=ctx.currentTime;
+    // White noise burst (swoosh)
+    const bufLen=ctx.sampleRate*0.18;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/bufLen,2.5);
+    const noise=ctx.createBufferSource();
+    noise.buffer=buf;
+    // Bandpass for metallic tone
+    const bp=ctx.createBiquadFilter();
+    bp.type='bandpass';bp.frequency.value=3200;bp.Q.value=1.8;
+    // High shelf for shimmer
+    const hi=ctx.createBiquadFilter();
+    hi.type='highshelf';hi.frequency.value=5000;hi.gain.value=6;
+    // Gain envelope
+    const g=ctx.createGain();
+    g.gain.setValueAtTime(0.28,now);
+    g.gain.exponentialRampToValueAtTime(0.01,now+0.2);
+    noise.connect(bp).connect(hi).connect(g).connect(ctx.destination);
+    noise.start(now);noise.stop(now+0.2);
+    // Metallic ring
+    const osc=ctx.createOscillator();
+    osc.type='sine';osc.frequency.setValueAtTime(2800,now);
+    osc.frequency.exponentialRampToValueAtTime(1200,now+0.12);
+    const og=ctx.createGain();
+    og.gain.setValueAtTime(0.08,now);
+    og.gain.exponentialRampToValueAtTime(0.001,now+0.15);
+    osc.connect(og).connect(ctx.destination);
+    osc.start(now);osc.stop(now+0.15);
+  }
+  const shield=document.querySelector('.shield-link');
+  if(shield) shield.addEventListener('mouseenter',playSwordSound);
+})();
 
 /* ═══════════════════════════════════════
    COSMOS CANVAS
