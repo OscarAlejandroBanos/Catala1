@@ -118,15 +118,15 @@
     .dossier-card:hover .cta-line{width:80px;background:linear-gradient(to right,var(--gold),transparent);}
     .dossier-card:hover .cta-line::after{border-color:var(--gold-lt);}
 
-    /* ── Shield game section ── */
+    /* ── Game section ── */
     .game-section{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
     .game-eyebrow{font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.48em;color:var(--gold-dk);text-transform:uppercase;margin-bottom:1.2rem;text-align:center;}
-    .shield-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1.2rem;cursor:none;}
-    .shield-wrap{position:relative;width:140px;filter:drop-shadow(0 4px 20px rgba(201,168,76,.25)) drop-shadow(0 0 6px rgba(201,168,76,.1));transition:filter .45s,transform .45s cubic-bezier(.22,1,.36,1);}
-    .shield-link:hover .shield-wrap{filter:drop-shadow(0 8px 40px rgba(201,168,76,.55)) drop-shadow(0 0 50px rgba(240,213,133,.3));transform:scale(1.1) translateY(-8px);}
-    .shield-svg{width:100%;display:block;}
-    .shield-link:hover .shield-letter{animation:lGlow .9s ease-in-out infinite alternate;}
-    @keyframes lGlow{from{filter:brightness(1);}to{filter:brightness(1.4) drop-shadow(0 0 10px rgba(240,213,133,.9));}}
+    .shield-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1rem;cursor:none;}
+    .game-img-wrap{position:relative;width:230px;max-width:42vw;border-radius:4px;overflow:hidden;box-shadow:0 0 0 1px rgba(201,168,76,.2),0 12px 50px rgba(0,0,0,.7),0 0 60px rgba(201,168,76,.06);transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;}
+    .shield-link:hover .game-img-wrap{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(201,168,76,.45),0 18px 60px rgba(0,0,0,.8),0 0 80px rgba(201,168,76,.18);}
+    .game-img{width:100%;display:block;}
+    .game-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,13,.7) 0%,transparent 50%);pointer-events:none;transition:opacity .4s;}
+    .shield-link:hover .game-img-overlay{opacity:.5;}
     .shield-text{text-align:center;}
     .shield-title{font-family:'Cinzel Decorative',serif;font-size:1rem;letter-spacing:.04em;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 8px rgba(201,168,76,.2));margin-bottom:.3rem;}
     .shield-subtitle{font-family:'IM Fell English',serif;font-style:italic;font-size:.95rem;color:var(--muted-lt);margin-bottom:.8rem;}
@@ -136,6 +136,7 @@
     .shield-cta-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:4px;height:4px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
     .shield-link:hover .shield-cta-line{width:50px;background:linear-gradient(to right,var(--gold),transparent);}
     .shield-link:hover .shield-cta-line::after{border-color:var(--gold-lt);}
+    @media(max-width:560px){.game-img-wrap{width:260px;max-width:80vw;}}
 
     /* ── Footer ── */
     footer{margin-top:4.5rem;text-align:center;opacity:0;animation:fadeUp .7s 2.4s ease forwards;}
@@ -183,53 +184,9 @@
     <div class="game-section">
       <p class="game-eyebrow">Videojoc</p>
       <a class="shield-link" href="sant_jordi_v3.html">
-        <div class="shield-wrap">
-          <svg class="shield-svg" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <clipPath id="sc">
-                <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z"/>
-              </clipPath>
-              <radialGradient id="sbg" cx="45%" cy="28%" r="80%">
-                <stop offset="0%" stop-color="#1e1630"/>
-                <stop offset="100%" stop-color="#07050e"/>
-              </radialGradient>
-              <linearGradient id="lgrd" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#f0d585"/>
-                <stop offset="45%" stop-color="#c9a84c"/>
-                <stop offset="100%" stop-color="#dbb95a"/>
-              </linearGradient>
-            </defs>
-            <!-- Drop shadow -->
-            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="rgba(0,0,0,0.55)" transform="translate(2,3)"/>
-            <!-- Shield fill -->
-            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="url(#sbg)"/>
-            <!-- Inner glow -->
-            <ellipse cx="50" cy="52" rx="32" ry="36" fill="rgba(201,168,76,0.055)" clip-path="url(#sc)"/>
-            <!-- Decorative top lines -->
-            <line x1="16" y1="23" x2="38" y2="23" stroke="rgba(201,168,76,0.3)" stroke-width="0.6"/>
-            <line x1="62" y1="23" x2="84" y2="23" stroke="rgba(201,168,76,0.3)" stroke-width="0.6"/>
-            <circle cx="13" cy="23" r="1.3" fill="rgba(201,168,76,0.45)"/>
-            <circle cx="87" cy="23" r="1.3" fill="rgba(201,168,76,0.45)"/>
-            <circle cx="50" cy="20" r="1.8" fill="rgba(201,168,76,0.55)"/>
-            <!-- The ornate "L" -->
-            <text class="shield-letter" x="51" y="83"
-              font-family="'Cinzel Decorative', serif"
-              font-size="64" font-weight="900"
-              text-anchor="middle"
-              fill="url(#lgrd)"
-              clip-path="url(#sc)">L</text>
-            <!-- Decorative bottom lines -->
-            <line x1="22" y1="92" x2="40" y2="92" stroke="rgba(201,168,76,0.25)" stroke-width="0.6" clip-path="url(#sc)"/>
-            <line x1="60" y1="92" x2="78" y2="92" stroke="rgba(201,168,76,0.25)" stroke-width="0.6" clip-path="url(#sc)"/>
-            <circle cx="50" cy="92" r="1.4" fill="rgba(201,168,76,0.35)" clip-path="url(#sc)"/>
-            <!-- Outer gold border -->
-            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
-            <!-- Inner border -->
-            <path d="M11 9 L89 9 L89 60 Q89 87 50 103 Q11 87 11 60 Z" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
-            <!-- Crown ornament top -->
-            <circle cx="50" cy="5" r="2.8" fill="#c9a84c"/>
-            <circle cx="50" cy="5" r="1.3" fill="#07050e"/>
-          </svg>
+        <div class="game-img-wrap">
+          <img src="videojoc.png" alt="Sant Jordi i els Dracs del Català" class="game-img"/>
+          <div class="game-img-overlay"></div>
         </div>
         <div class="shield-text">
           <div class="shield-title">Sant Jordi i els Dracs</div>
@@ -247,7 +204,7 @@
     <div class="card-glow-bar"></div>
     <div class="sweep"></div>
     <span class="card-badge">Material del Curs</span>
-    <div class="card-title">Dossier de Català</div>
+    <div class="card-title">Dossier Interactiu de Català</div>
     <div class="card-divider"></div>
     <p class="card-desc">Tots els continguts, exercicis i recursos del curs reunits en un únic document de referència imprescindible.</p>
     <div class="card-cta"><div class="cta-line"></div>Accedeix al dossier interactiu</div>
@@ -273,44 +230,72 @@ document.querySelectorAll('a').forEach(el=>{
 });
 
 /* ═══════════════════════════════════════
-   SWORD SOUND ON SHIELD HOVER
+   SWORD SOUND ON GAME IMAGE HOVER
 ═══════════════════════════════════════ */
 (function(){
   let audioCtx=null;
   function playSwordSound(){
     if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
     const ctx=audioCtx, now=ctx.currentTime;
-    // White noise burst (swoosh)
-    const bufLen=ctx.sampleRate*0.18;
-    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<bufLen;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/bufLen,2.5);
-    const noise=ctx.createBufferSource();
-    noise.buffer=buf;
-    // Bandpass for metallic tone
-    const bp=ctx.createBiquadFilter();
-    bp.type='bandpass';bp.frequency.value=3200;bp.Q.value=1.8;
-    // High shelf for shimmer
-    const hi=ctx.createBiquadFilter();
-    hi.type='highshelf';hi.frequency.value=5000;hi.gain.value=6;
-    // Gain envelope
-    const g=ctx.createGain();
-    g.gain.setValueAtTime(0.28,now);
-    g.gain.exponentialRampToValueAtTime(0.01,now+0.2);
-    noise.connect(bp).connect(hi).connect(g).connect(ctx.destination);
-    noise.start(now);noise.stop(now+0.2);
-    // Metallic ring
-    const osc=ctx.createOscillator();
-    osc.type='sine';osc.frequency.setValueAtTime(2800,now);
-    osc.frequency.exponentialRampToValueAtTime(1200,now+0.12);
-    const og=ctx.createGain();
-    og.gain.setValueAtTime(0.08,now);
-    og.gain.exponentialRampToValueAtTime(0.001,now+0.15);
-    osc.connect(og).connect(ctx.destination);
-    osc.start(now);osc.stop(now+0.15);
+
+    // Master gain
+    const master=ctx.createGain();
+    master.gain.value=0.55;
+    master.connect(ctx.destination);
+
+    // 1) SWOOSH — filtered noise with pitch envelope (sword draw)
+    const swooshLen=ctx.sampleRate*0.32;
+    const swooshBuf=ctx.createBuffer(1,swooshLen,ctx.sampleRate);
+    const sd=swooshBuf.getChannelData(0);
+    for(let i=0;i<swooshLen;i++){
+      const t=i/swooshLen;
+      sd[i]=(Math.random()*2-1)*Math.sin(Math.PI*t)*Math.pow(1-t,1.2);
+    }
+    const swoosh=ctx.createBufferSource();
+    swoosh.buffer=swooshBuf;
+
+    const lp=ctx.createBiquadFilter();
+    lp.type='bandpass';
+    lp.frequency.setValueAtTime(600,now);
+    lp.frequency.exponentialRampToValueAtTime(4800,now+0.14);
+    lp.Q.value=0.7;
+
+    const sg=ctx.createGain();
+    sg.gain.setValueAtTime(0.9,now);
+    sg.gain.exponentialRampToValueAtTime(0.001,now+0.32);
+
+    swoosh.connect(lp).connect(sg).connect(master);
+    swoosh.start(now); swoosh.stop(now+0.32);
+
+    // 2) CLANG — metallic impact (two detuned oscillators + fast decay)
+    [900,1340,2100,3200].forEach((freq,i)=>{
+      const o=ctx.createOscillator();
+      o.type='sawtooth';
+      o.frequency.setValueAtTime(freq*(1+i*0.003),now+0.11);
+      o.frequency.exponentialRampToValueAtTime(freq*0.55,now+0.55);
+      const og=ctx.createGain();
+      og.gain.setValueAtTime(0.18/(i+1),now+0.11);
+      og.gain.exponentialRampToValueAtTime(0.0001,now+0.55);
+      const bp2=ctx.createBiquadFilter();
+      bp2.type='peaking'; bp2.frequency.value=freq; bp2.gain.value=8; bp2.Q.value=4;
+      o.connect(bp2).connect(og).connect(master);
+      o.start(now+0.11); o.stop(now+0.6);
+    });
+
+    // 3) HIGH SHIMMER — metallic ring tail
+    const ring=ctx.createOscillator();
+    ring.type='sine';
+    ring.frequency.setValueAtTime(5800,now+0.12);
+    ring.frequency.exponentialRampToValueAtTime(3200,now+0.7);
+    const rg=ctx.createGain();
+    rg.gain.setValueAtTime(0.06,now+0.12);
+    rg.gain.exponentialRampToValueAtTime(0.0001,now+0.7);
+    ring.connect(rg).connect(master);
+    ring.start(now+0.12); ring.stop(now+0.7);
   }
-  const shield=document.querySelector('.shield-link');
-  if(shield) shield.addEventListener('mouseenter',playSwordSound);
+  const gameLink=document.querySelector('.shield-link');
+  if(gameLink) gameLink.addEventListener('mouseenter',playSwordSound);
 })();
 
 /* ═══════════════════════════════════════
