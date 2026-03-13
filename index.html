@@ -8,18 +8,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
-    :root {
+    /* ─────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────── */
+    :root{
       --gold:    #c9a84c;
       --gold-lt: #f0d585;
-      --gold-md: #dbb95a;
-      --gold-dk: #7a5f18;
+      --gold-md: #d4ae55;
+      --gold-dk: #6e5415;
       --deep:    #06060d;
-      --panel:   #0f0f1c;
-      --crimson: #b80000;
+      --ink:     #0b0b17;
+      --crimson: #a30000;
       --text:    #ede5d5;
-      --muted:   #6e6558;
-      --muted-lt:#9a9080;
+      --sub:     #a89f90;
+      --muted:   #635c52;
+
+      --card-bg:   linear-gradient(158deg,#111122bb 0%,#09091688 100%);
+      --card-bdr:  rgba(201,168,76,.10);
+      --card-pad:  2.6rem 3rem;
+      --card-r:    2px;
+      --gap:       2.6rem;
+      --ease:      cubic-bezier(.22,1,.36,1);
     }
+
+    /* ─────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────── */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{
@@ -33,291 +47,494 @@
       flex-direction:column;
       align-items:center;
     }
+    ::selection{background:var(--gold-dk);color:var(--deep);}
+    ::-webkit-scrollbar{width:2px;}
+    ::-webkit-scrollbar-track{background:var(--deep);}
+    ::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:1px;}
 
-    /* ── Cursor ── */
-    .cursor{position:fixed;width:8px;height:8px;background:var(--gold-lt);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:screen;box-shadow:0 0 10px rgba(240,213,133,.7);}
-    .cursor-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .28s,height .28s,border-color .3s;}
-    .cursor.hov{width:16px;height:16px;}
-    .cursor-ring.hov{width:52px;height:52px;border-color:rgba(201,168,76,.7);}
+    /* ─────────────────────────────────────────
+       CURSOR (desktop)
+    ───────────────────────────────────────── */
+    .cursor{
+      position:fixed;width:7px;height:7px;
+      background:var(--gold-lt);border-radius:50%;
+      pointer-events:none;z-index:9999;
+      transform:translate(-50%,-50%);
+      mix-blend-mode:screen;
+      box-shadow:0 0 8px rgba(240,213,133,.65);
+      transition:width .22s,height .22s;
+    }
+    .cursor-ring{
+      position:fixed;width:28px;height:28px;
+      border:1px solid rgba(201,168,76,.35);border-radius:50%;
+      pointer-events:none;z-index:9998;
+      transform:translate(-50%,-50%);
+      transition:width .26s,height .26s,border-color .28s;
+    }
+    .cursor.hov{width:14px;height:14px;}
+    .cursor-ring.hov{width:48px;height:48px;border-color:rgba(201,168,76,.65);}
 
-    /* ── Full-screen cosmos canvas ── */
+    /* ─────────────────────────────────────────
+       COSMOS + VIGNETTE
+    ───────────────────────────────────────── */
     #cosmos{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+    body::after{
+      content:'';position:fixed;inset:0;
+      background:radial-gradient(ellipse 90% 90% at 50% 50%,transparent 40%,rgba(0,0,0,.78) 100%);
+      pointer-events:none;z-index:1;
+    }
 
-    /* ── Vignette ── */
-    body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 85% 85% at 50% 50%,transparent 45%,rgba(0,0,0,.72) 100%);pointer-events:none;z-index:1;}
+    /* ─────────────────────────────────────────
+       LAYOUT WRAPPER
+    ───────────────────────────────────────── */
+    .wrapper{
+      position:relative;z-index:2;
+      display:flex;flex-direction:column;align-items:center;
+      padding:3.5rem 2rem 6rem;
+      max-width:760px;width:100%;
+    }
 
-    /* ── Wrapper ── */
-    .wrapper{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:3rem 2rem 5rem;max-width:860px;width:100%;}
+    /* ─────────────────────────────────────────
+       SHARED: CARD SHELL
+    ───────────────────────────────────────── */
+    .card{
+      position:relative;
+      background:var(--card-bg);
+      backdrop-filter:blur(6px);
+      border:1px solid var(--card-bdr);
+      border-radius:var(--card-r);
+      overflow:hidden;
+      transition:
+        border-color .45s var(--ease),
+        transform   .45s var(--ease),
+        box-shadow  .45s var(--ease);
+    }
+    .card:hover{
+      border-color:rgba(201,168,76,.28);
+      transform:translateY(-8px);
+      box-shadow:0 28px 72px rgba(0,0,0,.55),0 0 48px rgba(201,168,76,.06);
+    }
 
-    /* ── Section label (replaces portada-label & game-eyebrow) ── */
-    .section-label{
+    /* corner ornaments */
+    .c{position:absolute;width:16px;height:16px;border-style:solid;border-color:rgba(201,168,76,.35);pointer-events:none;transition:width .4s var(--ease),height .4s var(--ease),border-color .4s;}
+    .c.tl{top:9px;left:9px;border-width:1px 0 0 1px;}
+    .c.tr{top:9px;right:9px;border-width:1px 1px 0 0;}
+    .c.bl{bottom:9px;left:9px;border-width:0 0 1px 1px;}
+    .c.br{bottom:9px;right:9px;border-width:0 1px 1px 0;}
+    .card:hover .c{width:28px;height:28px;border-color:rgba(201,168,76,.6);}
+
+    /* top glow line */
+    .glow-bar{
+      position:absolute;top:0;left:50%;
+      width:0;height:1px;
+      background:linear-gradient(to right,transparent,var(--gold-lt),transparent);
+      transform:translateX(-50%);
+      transition:width .55s var(--ease);
+    }
+    .card:hover .glow-bar{width:78%;}
+
+    /* sweep */
+    .sweep{
+      position:absolute;inset:0;
+      background:linear-gradient(115deg,transparent 0%,rgba(201,168,76,.035) 50%,transparent 100%);
+      transform:translateX(-110%);
+      transition:transform .75s var(--ease);
+      pointer-events:none;
+    }
+    .card:hover .sweep{transform:translateX(110%);}
+
+    /* lined background */
+    .lined{
+      position:absolute;inset:0;
+      background-image:repeating-linear-gradient(
+        0deg,transparent,transparent 26px,
+        rgba(201,168,76,.016) 26px,rgba(201,168,76,.016) 27px
+      );
+      pointer-events:none;
+    }
+
+    /* ─────────────────────────────────────────
+       SHARED TYPOGRAPHY PRIMITIVES
+    ───────────────────────────────────────── */
+    .label{
       font-family:'Cinzel Decorative',serif;
-      font-size:.65rem;
-      letter-spacing:.55em;
-      color:var(--gold-md);
-      text-transform:uppercase;
-      margin-bottom:1.3rem;
-      text-align:center;
-      opacity:.9;
+      font-size:.6rem;letter-spacing:.55em;
+      color:var(--gold-md);text-transform:uppercase;
+      opacity:.85;
+    }
+    .divider-line{
+      width:36px;height:1px;
+      background:linear-gradient(to right,var(--gold-dk),transparent);
+      margin:.9rem 0 1rem;
     }
 
-    /* ── Portada + game row ── */
-    .portada-game-row{
-      display:flex;
-      flex-direction:row;
-      align-items:flex-start;
-      justify-content:center;
-      gap:3.5rem;
-      margin-bottom:3.2rem;
-      opacity:0;
-      animation:fadeUp 1s 1.6s cubic-bezier(.22,1,.36,1) forwards;
+    /* CTA arrow row */
+    .cta{
+      display:inline-flex;align-items:center;gap:.9rem;
+      font-family:'Cinzel Decorative',serif;
+      font-size:.6rem;letter-spacing:.4em;
+      color:var(--gold-dk);text-transform:uppercase;
+      transition:color .3s,gap .38s var(--ease);
+    }
+    .cta-arm{
+      width:44px;height:1px;
+      background:linear-gradient(to right,var(--gold-dk),transparent);
+      position:relative;
+      transition:width .4s var(--ease),background .3s;
+    }
+    .cta-arm::after{
+      content:'';position:absolute;right:-1px;top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      width:4px;height:4px;
+      border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);
+      transition:border-color .3s;
+    }
+    /* activated by parent hover */
+    .card:hover .cta,.dossier-link:hover .cta{color:var(--gold-lt);gap:1.4rem;}
+    .card:hover .cta-arm,.dossier-link:hover .cta-arm{width:70px;background:linear-gradient(to right,var(--gold),transparent);}
+    .card:hover .cta-arm::after,.dossier-link:hover .cta-arm::after{border-color:var(--gold-lt);}
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .top-rule{
+      width:1px;height:44px;
+      background:linear-gradient(to bottom,transparent,var(--gold-dk));
+      transform:scaleY(0);transform-origin:top;
+      animation:growLine .65s 1s ease forwards;
+      margin-bottom:1.5rem;
+    }
+    @keyframes growLine{to{transform:scaleY(1);}}
+
+    .eyebrow{
+      font-family:'Cinzel Decorative',serif;
+      font-size:.64rem;letter-spacing:.65em;
+      color:var(--gold-dk);text-transform:uppercase;
+      opacity:0;animation:up .55s 1.1s ease forwards;
+      margin-bottom:1rem;
+    }
+
+    .title-wrap{position:relative;margin-bottom:.5rem;}
+    h1{
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(2.8rem,8vw,5.4rem);
+      font-weight:900;line-height:1;text-align:center;
+      background:linear-gradient(155deg,var(--gold-lt) 0%,var(--gold-md) 38%,var(--gold) 58%,var(--gold-dk) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      opacity:0;animation:up .85s 1.2s ease forwards;
+      filter:drop-shadow(0 0 28px rgba(201,168,76,.22));
+    }
+    .shimmer{
+      position:absolute;inset:0;
+      background:linear-gradient(108deg,transparent 22%,rgba(255,255,255,.08) 50%,transparent 78%);
+      animation:shimmer 5s 2.8s ease-in-out infinite;
+      pointer-events:none;mix-blend-mode:screen;
+    }
+    @keyframes shimmer{
+      0%{transform:translateX(-140%) skewX(-14deg);}
+      30%{transform:translateX(140%) skewX(-14deg);}
+      100%{transform:translateX(140%) skewX(-14deg);}
+    }
+    .subtitle{
+      font-family:'IM Fell English',serif;font-style:italic;
+      font-size:1.25rem;color:var(--sub);letter-spacing:.1em;text-align:center;
+      opacity:0;animation:up .65s 1.35s ease forwards;margin-bottom:2.5rem;
+    }
+
+    /* ornament */
+    .orn{display:flex;align-items:center;gap:.8rem;width:100%;max-width:320px;opacity:0;animation:up .55s 1.48s ease forwards;margin-bottom:3rem;}
+    .orn-l{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.35),transparent);}
+    .orn-c{display:flex;align-items:center;gap:.4rem;}
+    .gem{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);animation:gemPulse 3s 2s ease-in-out infinite;}
+    .gem.s{width:3.5px;height:3.5px;background:var(--gold-dk);animation-delay:2.12s;}
+    @keyframes gemPulse{
+      0%,100%{box-shadow:0 0 3px rgba(201,168,76,.45);}
+      50%{box-shadow:0 0 14px rgba(201,168,76,.9),0 0 28px rgba(201,168,76,.35);}
+    }
+
+    /* ─────────────────────────────────────────
+       IMAGES ROW  (portada + videojoc)
+    ───────────────────────────────────────── */
+    .images-card{
       width:100%;
+      padding:2.4rem 2.8rem 2.6rem;
+      display:flex;flex-direction:row;align-items:flex-start;
+      justify-content:center;gap:3rem;
+      opacity:0;animation:up .95s 1.58s var(--ease) forwards;
     }
-    @media(max-width:620px){.portada-game-row{flex-direction:column;align-items:center;gap:2.8rem;}}
+    @media(max-width:580px){
+      .images-card{flex-direction:column;align-items:center;gap:2.4rem;padding:2rem 1.8rem 2.4rem;}
+    }
 
-    .portada-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
+    /* section label inside images card */
+    .img-label{font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.5em;color:var(--gold-md);text-transform:uppercase;opacity:.82;margin-bottom:1.1rem;text-align:center;}
+
+    .img-unit{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+
+    /* portada */
     .portada-link{display:block;position:relative;cursor:none;}
-    .portada-link::after{
-      content:'⬇ PDF';
-      position:absolute;bottom:10px;left:50%;
-      transform:translateX(-50%) translateY(8px);
-      font-family:'Cinzel Decorative',serif;font-size:.55rem;letter-spacing:.3em;
-      color:var(--gold-lt);background:rgba(6,6,13,.85);
-      padding:.35em .9em;border:1px solid rgba(201,168,76,.3);
-      opacity:0;transition:opacity .4s,transform .4s;
+    .portada-img{
+      width:235px;max-width:42vw;display:block;border-radius:3px;
+      box-shadow:0 0 0 1px rgba(201,168,76,.18),0 10px 44px rgba(0,0,0,.65),0 0 50px rgba(201,168,76,.05);
+      transition:transform .42s var(--ease),box-shadow .42s;
+    }
+    .portada-link:hover .portada-img{
+      transform:translateY(-5px);
+      box-shadow:0 0 0 1px rgba(201,168,76,.32),0 16px 56px rgba(0,0,0,.75),0 0 65px rgba(201,168,76,.10);
+    }
+    .portada-badge{
+      position:absolute;bottom:9px;left:50%;
+      transform:translateX(-50%) translateY(6px);
+      font-family:'Cinzel Decorative',serif;font-size:.48rem;letter-spacing:.3em;
+      color:var(--gold-lt);background:rgba(6,6,13,.88);
+      padding:.3em .85em;border:1px solid rgba(201,168,76,.28);
+      opacity:0;transition:opacity .38s,transform .38s;
       pointer-events:none;white-space:nowrap;
     }
-    .portada-link:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
-    .portada-img{
-      width:255px;max-width:44vw;
-      border-radius:4px;display:block;
-      box-shadow:
-        0 0 0 1px rgba(201,168,76,.2),
-        0 12px 50px rgba(0,0,0,.7),
-        0 0 60px rgba(201,168,76,.06);
-      transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;
-    }
-    .portada-link:hover .portada-img{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(201,168,76,.35),0 18px 60px rgba(0,0,0,.8),0 0 80px rgba(201,168,76,.12);}
-    @media(max-width:620px){.portada-img{width:270px;max-width:82vw;}}
+    .portada-link:hover .portada-badge{opacity:1;transform:translateX(-50%) translateY(0);}
+    @media(max-width:580px){.portada-img{width:250px;max-width:78vw;}}
 
-    /* ── Header text ── */
-    .top-rule{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--gold-dk));transform:scaleY(0);transform-origin:top;animation:growDown .7s 1s ease forwards;margin-bottom:1.6rem;}
-    @keyframes growDown{to{transform:scaleY(1);}}
-
-    .eyebrow{font-family:'Cinzel Decorative',serif;font-size:.72rem;letter-spacing:.65em;color:var(--gold-dk);text-transform:uppercase;opacity:0;animation:fadeUp .6s 1.1s ease forwards;margin-bottom:1rem;}
-
-    .title-wrap{position:relative;margin-bottom:.6rem;}
-    h1{font-family:'Cinzel Decorative',serif;font-size:clamp(3.2rem,9vw,6.5rem);font-weight:900;line-height:1;text-align:center;background:linear-gradient(160deg,var(--gold-lt) 0%,var(--gold-md) 35%,var(--gold) 55%,var(--gold-dk) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:fadeUp .9s 1.2s ease forwards;filter:drop-shadow(0 0 32px rgba(201,168,76,.28));}
-    .title-shimmer{position:absolute;inset:0;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.09) 50%,transparent 80%);animation:titleShimmer 4.5s 2.8s ease-in-out infinite;pointer-events:none;mix-blend-mode:screen;}
-    @keyframes titleShimmer{0%{transform:translateX(-130%) skewX(-15deg)}30%{transform:translateX(130%) skewX(-15deg)}100%{transform:translateX(130%) skewX(-15deg)}}
-
-    .subtitle{font-family:'IM Fell English',serif;font-style:italic;font-size:1.4rem;color:var(--muted-lt);letter-spacing:.12em;text-align:center;opacity:0;animation:fadeUp .7s 1.4s ease forwards;margin-bottom:2.5rem;}
-
-    /* ── Ornament ── */
-    .ornament{display:flex;align-items:center;gap:.9rem;width:100%;max-width:360px;opacity:0;animation:fadeUp .6s 1.55s ease forwards;margin-bottom:3.5rem;}
-    .orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.4),transparent);}
-    .orn-center{display:flex;align-items:center;gap:.45rem;}
-    .orn-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);animation:gemPulse 3s 2s ease-in-out infinite;}
-    .orn-diamond.sm{width:4px;height:4px;background:var(--gold-dk);animation-delay:2.15s;}
-    @keyframes gemPulse{0%,100%{box-shadow:0 0 4px rgba(201,168,76,.5);}50%{box-shadow:0 0 16px rgba(201,168,76,.95),0 0 32px rgba(201,168,76,.38);}}
-
-    /* ── Shared corner ornament ── */
-    .corner{position:absolute;width:18px;height:18px;border-style:solid;border-color:var(--gold-dk);pointer-events:none;transition:width .45s cubic-bezier(.22,1,.36,1),height .45s cubic-bezier(.22,1,.36,1),border-color .45s;}
-    .corner.tl{top:10px;left:10px;border-width:1px 0 0 1px;}
-    .corner.tr{top:10px;right:10px;border-width:1px 1px 0 0;}
-    .corner.bl{bottom:10px;left:10px;border-width:0 0 1px 1px;}
-    .corner.br{bottom:10px;right:10px;border-width:0 1px 1px 0;}
-
-    /* ── Dossier card ── */
-    .dossier-card{
-      position:relative;display:block;text-decoration:none;
-      width:100%;max-width:580px;
-      background:linear-gradient(150deg,#14142055 0%,#0c0c1a 100%);
-      backdrop-filter:blur(4px);
-      border:1px solid rgba(201,168,76,.1);
-      padding:3rem 3.2rem 2.8rem;
-      overflow:hidden;
-      opacity:0;animation:fadeUp 1s 1.75s cubic-bezier(.22,1,.36,1) forwards;
-      transition:border-color .5s,transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s;
-    }
-    .dossier-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-10px);box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(201,168,76,.07),inset 0 1px 0 rgba(201,168,76,.1);}
-    .dossier-card:hover .corner{width:34px;height:34px;border-color:var(--gold);}
-    .card-glow-bar{position:absolute;top:0;left:50%;width:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-lt),transparent);transform:translateX(-50%);transition:width .6s cubic-bezier(.22,1,.36,1);}
-    .dossier-card:hover .card-glow-bar{width:80%;}
-    .sweep{position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(201,168,76,.04) 50%,transparent 100%);transform:translateX(-100%);transition:transform .8s cubic-bezier(.22,1,.36,1);pointer-events:none;}
-    .dossier-card:hover .sweep{transform:translateX(100%);}
-    .card-bg-pattern{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(201,168,76,.018) 28px,rgba(201,168,76,.018) 29px);pointer-events:none;}
-    .card-badge{display:inline-flex;align-items:center;gap:.6rem;font-family:'Cinzel Decorative',serif;font-size:.62rem;letter-spacing:.55em;color:var(--crimson);border:1px solid rgba(184,0,0,.3);padding:.35em 1.1em;margin-bottom:1.5rem;text-transform:uppercase;}
-    .card-badge::before{content:'';width:4px;height:4px;background:var(--crimson);border-radius:50%;animation:badgePulse 2s ease-in-out infinite;}
-    @keyframes badgePulse{0%,100%{opacity:1}50%{opacity:.3}}
-    .card-title{font-family:'Cinzel Decorative',serif;font-size:1.75rem;letter-spacing:.03em;line-height:1.25;margin-bottom:1rem;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 12px rgba(201,168,76,.2));}
-    .card-divider{width:40px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);margin-bottom:1.1rem;}
-    .card-desc{font-family:'IM Fell English',serif;font-style:italic;font-size:1.3rem;color:var(--muted-lt);line-height:1.7;margin-bottom:2rem;}
-    .card-cta{display:inline-flex;align-items:center;gap:1rem;font-family:'Cinzel Decorative',serif;font-size:.68rem;letter-spacing:.42em;color:var(--gold-dk);text-transform:uppercase;transition:color .35s,gap .4s;}
-    .dossier-card:hover .card-cta{color:var(--gold-lt);gap:1.5rem;}
-    .cta-line{width:50px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:width .45s cubic-bezier(.22,1,.36,1),background .35s;position:relative;}
-    .cta-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:5px;height:5px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
-    .dossier-card:hover .cta-line{width:80px;background:linear-gradient(to right,var(--gold),transparent);}
-    .dossier-card:hover .cta-line::after{border-color:var(--gold-lt);}
-
-    /* ── Game section ── */
-    .game-section{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
-    .shield-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1.2rem;cursor:none;}
+    /* game */
+    .game-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1.1rem;cursor:none;}
     .game-img-wrap{
-      position:relative;width:310px;max-width:46vw;
-      border-radius:4px;overflow:hidden;
-      box-shadow:0 0 0 1px rgba(201,168,76,.2),0 12px 50px rgba(0,0,0,.7),0 0 60px rgba(201,168,76,.06);
-      transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;
+      position:relative;width:285px;max-width:44vw;
+      border-radius:3px;overflow:hidden;
+      box-shadow:0 0 0 1px rgba(201,168,76,.18),0 10px 44px rgba(0,0,0,.65),0 0 50px rgba(201,168,76,.05);
+      transition:transform .42s var(--ease),box-shadow .42s;
     }
-    .shield-link:hover .game-img-wrap{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(201,168,76,.45),0 18px 60px rgba(0,0,0,.8),0 0 80px rgba(201,168,76,.18);}
+    .game-link:hover .game-img-wrap{
+      transform:translateY(-5px);
+      box-shadow:0 0 0 1px rgba(201,168,76,.40),0 16px 56px rgba(0,0,0,.75),0 0 65px rgba(201,168,76,.14);
+    }
     .game-img{width:100%;display:block;}
-    .game-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,13,.7) 0%,transparent 50%);pointer-events:none;transition:opacity .4s;}
-    .shield-link:hover .game-img-overlay{opacity:.5;}
-    .shield-text{text-align:center;}
-    .shield-title{font-family:'Cinzel Decorative',serif;font-size:1.05rem;letter-spacing:.04em;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 8px rgba(201,168,76,.2));margin-bottom:.3rem;}
-    .shield-subtitle{font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;color:var(--muted-lt);margin-bottom:.9rem;}
-    .shield-cta{display:inline-flex;align-items:center;gap:.8rem;font-family:'Cinzel Decorative',serif;font-size:.6rem;letter-spacing:.42em;color:var(--gold-dk);text-transform:uppercase;transition:color .35s,gap .4s;}
-    .shield-link:hover .shield-cta{color:var(--gold-lt);gap:1.2rem;}
-    .shield-cta-line{width:30px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:width .45s cubic-bezier(.22,1,.36,1),background .35s;position:relative;}
-    .shield-cta-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:4px;height:4px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
-    .shield-link:hover .shield-cta-line{width:50px;background:linear-gradient(to right,var(--gold),transparent);}
-    .shield-link:hover .shield-cta-line::after{border-color:var(--gold-lt);}
-    @media(max-width:620px){.game-img-wrap{width:270px;max-width:82vw;}}
-
-    /* ── Section separator ── */
-    .section-sep{display:flex;align-items:center;gap:1rem;width:100%;max-width:500px;margin:2.8rem 0;}
-    .sep-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.22),transparent);}
-    .sep-diamond{width:5px;height:5px;background:var(--gold-dk);transform:rotate(45deg);flex-shrink:0;}
-
-    /* ── Dites i Refranys section ── */
-    .dites-section{
-      width:100%;max-width:580px;
-      opacity:0;animation:fadeUp 1s 2s cubic-bezier(.22,1,.36,1) forwards;
+    .game-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,13,.65) 0%,transparent 48%);pointer-events:none;transition:opacity .38s;}
+    .game-link:hover .game-overlay{opacity:.45;}
+    .game-name{font-family:'Cinzel Decorative',serif;font-size:.98rem;letter-spacing:.04em;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 58%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.2rem;text-align:center;}
+    .game-sub{font-family:'IM Fell English',serif;font-style:italic;font-size:.92rem;color:var(--sub);margin-bottom:.75rem;text-align:center;}
+    .game-cta{
+      display:inline-flex;align-items:center;gap:.7rem;
+      font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.4em;
+      color:var(--gold-dk);text-transform:uppercase;
+      transition:color .3s,gap .38s var(--ease);
     }
-    .dites-header{display:flex;flex-direction:column;align-items:center;margin-bottom:1.8rem;gap:.5rem;}
-    .dites-title{
+    .game-link:hover .game-cta{color:var(--gold-lt);gap:1.1rem;}
+    .game-arm{
+      width:26px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);
+      position:relative;transition:width .4s var(--ease),background .3s;
+    }
+    .game-arm::after{
+      content:'';position:absolute;right:-1px;top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      width:4px;height:4px;
+      border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);
+      transition:border-color .3s;
+    }
+    .game-link:hover .game-arm{width:44px;background:linear-gradient(to right,var(--gold),transparent);}
+    .game-link:hover .game-arm::after{border-color:var(--gold-lt);}
+    @media(max-width:580px){.game-img-wrap{width:250px;max-width:78vw;}}
+
+    /* ─────────────────────────────────────────
+       DOSSIER CARD (link)
+    ───────────────────────────────────────── */
+    .dossier-link{
+      display:block;text-decoration:none;
+      width:100%;
+      opacity:0;animation:up .95s 1.78s var(--ease) forwards;
+    }
+    .dossier-inner{padding:var(--card-pad);}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:.55rem;
+      font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.5em;
+      color:var(--crimson);border:1px solid rgba(163,0,0,.28);
+      padding:.3em 1em;margin-bottom:1.4rem;text-transform:uppercase;
+    }
+    .badge::before{content:'';width:4px;height:4px;background:var(--crimson);border-radius:50%;animation:blink 2.2s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+    .card-title{
       font-family:'Cinzel Decorative',serif;
-      font-size:1.3rem;
-      letter-spacing:.04em;
-      background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);
+      font-size:1.55rem;letter-spacing:.03em;line-height:1.25;
+      margin-bottom:.9rem;
+      background:linear-gradient(112deg,var(--gold-lt) 0%,var(--gold) 58%,var(--gold-md) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      filter:drop-shadow(0 2px 10px rgba(201,168,76,.18));
+    }
+    .card-body{
+      font-family:'IM Fell English',serif;font-style:italic;
+      font-size:1.18rem;color:var(--sub);line-height:1.72;
+      margin-bottom:2rem;
+    }
+
+    /* ─────────────────────────────────────────
+       DITES I REFRANYS
+    ───────────────────────────────────────── */
+    .dites-wrap{
+      width:100%;
+      opacity:0;animation:up .95s 1.98s var(--ease) forwards;
+    }
+    .section-head{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:1.4rem;gap:.5rem;}
+    .section-head .label{margin:0;}
+    .section-title{
+      font-family:'Cinzel Decorative',serif;
+      font-size:1.05rem;letter-spacing:.05em;
+      background:linear-gradient(112deg,var(--gold-lt) 0%,var(--gold) 58%,var(--gold-md) 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
-    .dites-card{
-      position:relative;
-      background:linear-gradient(150deg,#141420aa 0%,#0c0c1acc 100%);
-      backdrop-filter:blur(6px);
-      border:1px solid rgba(201,168,76,.12);
-      padding:2.8rem 3rem 2.4rem;
-      overflow:hidden;
-      transition:border-color .4s,box-shadow .4s;
-    }
-    .dites-card:hover{border-color:rgba(201,168,76,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(201,168,76,.05);}
-    .dites-card:hover .corner{width:30px;height:30px;border-color:rgba(201,168,76,.6);}
-    .dites-card .card-glow-bar{position:absolute;top:0;left:50%;width:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-lt),transparent);transform:translateX(-50%);transition:width .6s cubic-bezier(.22,1,.36,1);}
-    .dites-card:hover .card-glow-bar{width:70%;}
-    .dites-card .sweep{position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(201,168,76,.03) 50%,transparent 100%);transform:translateX(-100%);transition:transform .8s cubic-bezier(.22,1,.36,1);pointer-events:none;}
-    .dites-card:hover .sweep{transform:translateX(100%);}
 
-    .quote-mark{
+    .dites-card{padding:2.4rem 3rem 2.2rem;}
+
+    .quote-glyph{
       font-family:'IM Fell English',serif;
-      font-size:4.5rem;line-height:.75;
-      color:rgba(201,168,76,.14);
-      display:block;margin-bottom:.6rem;
-      user-select:none;
+      font-size:3.8rem;line-height:.7;
+      color:rgba(201,168,76,.12);
+      display:block;margin-bottom:.55rem;
+      user-select:none;-webkit-user-select:none;
     }
-    .dita-wrap{min-height:110px;display:flex;flex-direction:column;justify-content:center;margin-bottom:2.2rem;}
+
+    .dita-zone{
+      min-height:120px;
+      display:flex;flex-direction:column;justify-content:center;
+      margin-bottom:1.8rem;
+    }
     .dita-text{
       font-family:'IM Fell English',serif;font-style:italic;
-      font-size:1.6rem;line-height:1.6;
-      color:var(--text);margin-bottom:.9rem;
-      transition:opacity .35s cubic-bezier(.22,1,.36,1),transform .35s cubic-bezier(.22,1,.36,1);
+      font-size:1.38rem;line-height:1.65;
+      color:var(--text);margin-bottom:.65rem;
+      user-select:none;-webkit-user-select:none;
+      transition:opacity .32s ease,transform .32s ease;
     }
-    .dita-text.fade{opacity:0;transform:translateY(10px);}
+    .dita-text.out{opacity:0;transform:translateY(9px);}
     .dita-meaning{
-      font-family:'Cormorant Garamond',serif;font-size:1.05rem;
-      color:var(--muted-lt);line-height:1.6;
-      transition:opacity .35s cubic-bezier(.22,1,.36,1),transform .35s cubic-bezier(.22,1,.36,1);
+      font-family:'Cormorant Garamond',serif;
+      font-size:.98rem;color:var(--sub);line-height:1.62;
+      user-select:none;-webkit-user-select:none;
+      transition:opacity .32s ease,transform .32s ease;
     }
-    .dita-meaning.fade{opacity:0;transform:translateY(7px);}
+    .dita-meaning.out{opacity:0;transform:translateY(6px);}
 
-    .dites-controls{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
-    .dita-counter{font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;}
+    .dites-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+    .dita-count{
+      font-family:'Cinzel Decorative',serif;font-size:.55rem;letter-spacing:.4em;
+      color:var(--muted);text-transform:uppercase;
+    }
     .dita-btn{
-      display:inline-flex;align-items:center;gap:.9rem;
-      font-family:'Cinzel Decorative',serif;font-size:.62rem;letter-spacing:.42em;
+      display:inline-flex;align-items:center;gap:.8rem;
+      font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.4em;
       color:var(--gold-dk);text-transform:uppercase;
-      background:none;border:none;cursor:none;
-      transition:color .35s,gap .4s;padding:0;
+      background:none;border:none;cursor:none;padding:.6rem 0;
+      /* mobile: increase tap target */
+      min-height:44px;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      transition:color .3s,gap .38s var(--ease);
     }
-    .dita-btn:hover{color:var(--gold-lt);gap:1.3rem;}
-    .dita-btn-line{width:36px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:width .45s cubic-bezier(.22,1,.36,1),background .35s;position:relative;}
-    .dita-btn-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:4px;height:4px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
-    .dita-btn:hover .dita-btn-line{width:55px;background:linear-gradient(to right,var(--gold),transparent);}
-    .dita-btn:hover .dita-btn-line::after{border-color:var(--gold-lt);}
+    .dita-btn:hover{color:var(--gold-lt);gap:1.2rem;}
+    .dita-arm{
+      width:32px;height:1px;
+      background:linear-gradient(to right,var(--gold-dk),transparent);
+      position:relative;transition:width .4s var(--ease),background .3s;
+    }
+    .dita-arm::after{
+      content:'';position:absolute;right:-1px;top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      width:4px;height:4px;
+      border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);
+      transition:border-color .3s;
+    }
+    .dita-btn:hover .dita-arm{width:50px;background:linear-gradient(to right,var(--gold),transparent);}
+    .dita-btn:hover .dita-arm::after{border-color:var(--gold-lt);}
 
-    /* ── SoftCatalà ── */
+    /* ─────────────────────────────────────────
+       SOFTCATALÀ BUTTON
+    ───────────────────────────────────────── */
     .softcatala-wrap{
-      opacity:0;animation:fadeUp 1s 2.15s cubic-bezier(.22,1,.36,1) forwards;
-      display:flex;flex-direction:column;align-items:center;
-      width:100%;max-width:580px;
+      width:100%;
+      opacity:0;animation:up .95s 2.16s var(--ease) forwards;
     }
-    .softcatala-btn{
-      position:relative;display:flex;align-items:center;gap:1.6rem;
-      text-decoration:none;
-      border:1px solid rgba(201,168,76,.16);
-      padding:1.6rem 2.4rem;
-      background:linear-gradient(135deg,#0d0d1e 0%,#09090f 100%);
-      overflow:hidden;cursor:none;width:100%;
-      transition:border-color .4s,transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s;
-    }
-    .softcatala-btn:hover{border-color:rgba(201,168,76,.4);transform:translateY(-5px);box-shadow:0 24px 64px rgba(0,0,0,.5),0 0 40px rgba(201,168,76,.06);}
-    .softcatala-btn:hover .corner{width:28px;height:28px;border-color:rgba(201,168,76,.55);}
-    .softcatala-btn .card-glow-bar{position:absolute;top:0;left:50%;width:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-lt),transparent);transform:translateX(-50%);transition:width .6s cubic-bezier(.22,1,.36,1);}
-    .softcatala-btn:hover .card-glow-bar{width:75%;}
-    .softcatala-btn .sweep{position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(201,168,76,.035) 50%,transparent 100%);transform:translateX(-100%);transition:transform .7s cubic-bezier(.22,1,.36,1);pointer-events:none;}
-    .softcatala-btn:hover .sweep{transform:translateX(100%);}
 
+    .sc-link{
+      display:flex;align-items:center;gap:1.4rem;
+      text-decoration:none;cursor:none;
+      padding:1.55rem 2.6rem;
+      /* overrides card default transform */
+    }
     .sc-icon{
-      width:48px;height:48px;flex-shrink:0;
+      width:44px;height:44px;flex-shrink:0;
       display:flex;align-items:center;justify-content:center;
       border:1px solid rgba(201,168,76,.22);border-radius:50%;
       background:rgba(201,168,76,.04);
       transition:border-color .35s,background .35s;
     }
-    .softcatala-btn:hover .sc-icon{border-color:rgba(201,168,76,.55);background:rgba(201,168,76,.09);}
-    .sc-monogram{
-      font-family:'Cinzel Decorative',serif;font-size:.9rem;letter-spacing:.04em;
-      color:var(--gold-dk);transition:color .35s;
+    .card:hover .sc-icon{border-color:rgba(201,168,76,.55);background:rgba(201,168,76,.09);}
+    .sc-mono{
+      font-family:'Cinzel Decorative',serif;font-size:.85rem;
+      color:var(--gold-dk);letter-spacing:.03em;
+      transition:color .3s;
     }
-    .softcatala-btn:hover .sc-monogram{color:var(--gold-lt);}
-
-    .sc-text{flex:1;}
+    .card:hover .sc-mono{color:var(--gold-lt);}
+    .sc-text{flex:1;min-width:0;}
     .sc-name{
-      font-family:'Cinzel Decorative',serif;font-size:1.12rem;letter-spacing:.05em;
-      background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);
+      font-family:'Cinzel Decorative',serif;font-size:1.08rem;letter-spacing:.04em;
+      background:linear-gradient(112deg,var(--gold-lt) 0%,var(--gold) 58%,var(--gold-md) 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      display:block;margin-bottom:.35rem;
+      display:block;margin-bottom:.28rem;
     }
-    .sc-desc{font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;color:var(--muted-lt);}
-
+    .sc-desc{font-family:'IM Fell English',serif;font-style:italic;font-size:.98rem;color:var(--sub);}
     .sc-arrow{
-      display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;
-      flex-shrink:0;opacity:.45;
-      transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);
+      flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:.38rem;
+      opacity:.38;transition:opacity .3s,transform .38s var(--ease);
     }
-    .softcatala-btn:hover .sc-arrow{opacity:1;transform:translateX(5px);}
-    .sc-arr-line{height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:background .35s;}
-    .softcatala-btn:hover .sc-arr-line{background:linear-gradient(to right,var(--gold),transparent);}
+    .card:hover .sc-arrow{opacity:.9;transform:translateX(5px);}
+    .sc-dash{height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:background .3s;}
+    .card:hover .sc-dash{background:linear-gradient(to right,var(--gold),transparent);}
 
-    /* ── Footer ── */
-    footer{margin-top:4.5rem;text-align:center;opacity:0;animation:fadeUp .7s 2.45s ease forwards;}
-    .footer-quote{font-family:'IM Fell English',serif;font-style:italic;font-size:1.2rem;color:var(--muted);letter-spacing:.06em;}
-    .footer-mark{display:block;font-family:'Cinzel Decorative',serif;font-size:.6rem;letter-spacing:.65em;color:rgba(201,168,76,.2);margin-top:.8rem;text-transform:uppercase;}
+    /* ─────────────────────────────────────────
+       SECTION SEPARATOR
+    ───────────────────────────────────────── */
+    .sep{
+      display:flex;align-items:center;gap:.85rem;
+      width:100%;max-width:440px;
+      margin:var(--gap) 0;
+    }
+    .sep-l{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.18),transparent);}
+    .sep-d{width:4px;height:4px;background:var(--gold-dk);transform:rotate(45deg);flex-shrink:0;}
 
-    @keyframes riseIn{from{opacity:0;transform:translateY(-45px) scale(.91);}to{opacity:1;transform:translateY(0) scale(1);}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
-    ::-webkit-scrollbar{width:3px;} ::-webkit-scrollbar-track{background:var(--deep);} ::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:2px;}
-    ::selection{background:var(--gold-dk);color:var(--deep);}
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer{
+      margin-top:var(--gap);text-align:center;
+      opacity:0;animation:up .65s 2.35s ease forwards;
+    }
+    .footer-q{
+      font-family:'IM Fell English',serif;font-style:italic;
+      font-size:1.08rem;color:var(--muted);letter-spacing:.06em;
+    }
+    .footer-m{
+      display:block;
+      font-family:'Cinzel Decorative',serif;font-size:.55rem;letter-spacing:.65em;
+      color:rgba(201,168,76,.18);margin-top:.75rem;text-transform:uppercase;
+    }
+
+    /* ─────────────────────────────────────────
+       KEYFRAMES
+    ───────────────────────────────────────── */
+    @keyframes up{
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    /* ─────────────────────────────────────────
+       MOBILE TWEAKS
+    ───────────────────────────────────────── */
+    @media(max-width:480px){
+      :root{--card-pad:2rem 1.8rem;}
+      h1{font-size:clamp(2.4rem,11vw,3.8rem);}
+      .dita-text{font-size:1.22rem;}
+      .dites-card{padding:2rem 1.8rem 1.8rem;}
+      .sc-link{padding:1.3rem 1.8rem;}
+    }
   </style>
 </head>
 <body>
@@ -327,452 +544,420 @@
 <canvas id="cosmos"></canvas>
 
 <div class="wrapper">
+
+  <!-- ── Header ── -->
   <div class="top-rule"></div>
   <p class="eyebrow">Llengua &amp; Cultura &nbsp;·&nbsp; Curs Inicial</p>
   <div class="title-wrap">
     <h1>Català&nbsp;1</h1>
-    <div class="title-shimmer"></div>
+    <div class="shimmer"></div>
   </div>
   <p class="subtitle">Benvinguts al món de la llengua catalana</p>
 
-  <div class="ornament">
-    <div class="orn-line"></div>
-    <div class="orn-center">
-      <div class="orn-diamond sm"></div>
-      <div class="orn-diamond"></div>
-      <div class="orn-diamond sm"></div>
+  <div class="orn">
+    <div class="orn-l"></div>
+    <div class="orn-c">
+      <div class="gem s"></div>
+      <div class="gem"></div>
+      <div class="gem s"></div>
     </div>
-    <div class="orn-line"></div>
+    <div class="orn-l"></div>
   </div>
 
-  <!-- Portada + Videojoc -->
-  <div class="portada-game-row">
-    <div class="portada-wrap">
-      <p class="section-label">Dossier del Curs</p>
+  <!-- ── Portada + Videojoc ── -->
+  <div class="images-card card">
+    <div class="c tl"></div><div class="c tr"></div>
+    <div class="c bl"></div><div class="c br"></div>
+    <div class="glow-bar"></div>
+    <div class="sweep"></div>
+
+    <div class="img-unit">
+      <p class="img-label">Dossier del Curs</p>
       <a class="portada-link" href="dossier.pdf" download>
         <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
+        <span class="portada-badge">⬇ Descarrega PDF</span>
       </a>
     </div>
-    <div class="game-section">
-      <p class="section-label">Videojoc</p>
-      <a class="shield-link" href="sant_jordi_v3.html">
+
+    <div class="img-unit">
+      <p class="img-label">Videojoc</p>
+      <a class="game-link" href="sant_jordi_v3.html">
         <div class="game-img-wrap">
           <img src="videojoc.png" alt="Sant Jordi i els Dracs del Català" class="game-img"/>
-          <div class="game-img-overlay"></div>
+          <div class="game-overlay"></div>
         </div>
-        <div class="shield-text">
-          <div class="shield-title">Sant Jordi i els Dracs</div>
-          <div class="shield-subtitle">del Català</div>
-          <div class="shield-cta">
-            <div class="shield-cta-line"></div>
+        <div>
+          <div class="game-name">Sant Jordi i els Dracs</div>
+          <div class="game-sub">del Català</div>
+          <div class="game-cta">
+            <div class="game-arm"></div>
             Juga ara
-            <div class="shield-cta-line" style="transform:scaleX(-1)"></div>
+            <div class="game-arm" style="transform:scaleX(-1)"></div>
           </div>
         </div>
       </a>
     </div>
   </div>
 
-  <!-- Dossier interactiu card -->
-  <a class="dossier-card" href="dossier-catala.html">
-    <div class="card-bg-pattern"></div>
-    <div class="corner tl"></div><div class="corner tr"></div>
-    <div class="corner bl"></div><div class="corner br"></div>
-    <div class="card-glow-bar"></div>
-    <div class="sweep"></div>
-    <span class="card-badge">Material del Curs</span>
-    <div class="card-title">Dossier Interactiu de Català</div>
-    <div class="card-divider"></div>
-    <p class="card-desc">Tots els continguts, exercicis i recursos del curs reunits en un únic document de referència imprescindible.</p>
-    <div class="card-cta"><div class="cta-line"></div>Accedeix al dossier interactiu</div>
+  <!-- ── Dossier interactiu ── -->
+  <div style="height:var(--gap)"></div>
+  <a class="dossier-link" href="dossier-catala.html">
+    <div class="card">
+      <div class="lined"></div>
+      <div class="c tl"></div><div class="c tr"></div>
+      <div class="c bl"></div><div class="c br"></div>
+      <div class="glow-bar"></div>
+      <div class="sweep"></div>
+      <div class="dossier-inner">
+        <span class="badge">Material del Curs</span>
+        <div class="card-title">Dossier Interactiu de Català</div>
+        <div class="divider-line"></div>
+        <p class="card-body">Tots els continguts, exercicis i recursos del curs reunits en un únic document de referència imprescindible.</p>
+        <div class="cta"><div class="cta-arm"></div>Accedeix al dossier interactiu</div>
+      </div>
+    </div>
   </a>
 
-  <!-- Separator -->
-  <div class="section-sep">
-    <div class="sep-line"></div>
-    <div class="sep-diamond"></div>
-    <div class="sep-line"></div>
+  <!-- ── Separator ── -->
+  <div class="sep">
+    <div class="sep-l"></div><div class="sep-d"></div><div class="sep-l"></div>
   </div>
 
-  <!-- Dites i Refranys Catalans -->
-  <div class="dites-section">
-    <div class="dites-header">
-      <p class="section-label">Saviesa Popular</p>
-      <div class="dites-title">Dites i Refranys Catalans</div>
+  <!-- ── Dites i Refranys ── -->
+  <div class="dites-wrap">
+    <div class="section-head">
+      <p class="label">Saviesa Popular</p>
+      <div class="section-title">Dites i Refranys Catalans</div>
     </div>
-    <div class="dites-card">
-      <div class="corner tl"></div><div class="corner tr"></div>
-      <div class="corner bl"></div><div class="corner br"></div>
-      <div class="card-glow-bar"></div>
+    <div class="card dites-card">
+      <div class="c tl"></div><div class="c tr"></div>
+      <div class="c bl"></div><div class="c br"></div>
+      <div class="glow-bar"></div>
       <div class="sweep"></div>
-      <span class="quote-mark">❝</span>
-      <div class="dita-wrap">
+      <span class="quote-glyph">❝</span>
+      <div class="dita-zone">
         <p class="dita-text" id="ditaText"></p>
         <p class="dita-meaning" id="ditaMeaning"></p>
       </div>
-      <div class="dites-controls">
-        <span class="dita-counter" id="ditaCounter"></span>
-        <button class="dita-btn" id="ditaBtn">
+      <div class="dites-foot">
+        <span class="dita-count" id="ditaCount"></span>
+        <button class="dita-btn" id="ditaBtn" aria-label="Mostra la dita següent">
           Dita següent
-          <div class="dita-btn-line"></div>
+          <div class="dita-arm"></div>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Separator -->
-  <div class="section-sep" style="margin-top:2rem;">
-    <div class="sep-line"></div>
-    <div class="sep-diamond"></div>
-    <div class="sep-line"></div>
+  <!-- ── Separator ── -->
+  <div class="sep">
+    <div class="sep-l"></div><div class="sep-d"></div><div class="sep-l"></div>
   </div>
 
-  <!-- SoftCatalà -->
+  <!-- ── SoftCatalà ── -->
   <div class="softcatala-wrap">
-    <p class="section-label">Eines Digitals</p>
-    <a class="softcatala-btn" href="https://www.softcatala.org/" target="_blank" rel="noopener">
-      <div class="corner tl"></div><div class="corner tr"></div>
-      <div class="corner bl"></div><div class="corner br"></div>
-      <div class="card-glow-bar"></div>
+    <div class="section-head">
+      <p class="label">Eines Digitals</p>
+    </div>
+    <div class="card">
+      <div class="c tl"></div><div class="c tr"></div>
+      <div class="c bl"></div><div class="c br"></div>
+      <div class="glow-bar"></div>
       <div class="sweep"></div>
-      <div class="sc-icon">
-        <span class="sc-monogram">SC</span>
-      </div>
-      <div class="sc-text">
-        <span class="sc-name">SoftCatalà</span>
-        <span class="sc-desc">Eines i recursos digitals en llengua catalana</span>
-      </div>
-      <div class="sc-arrow">
-        <div class="sc-arr-line" style="width:32px"></div>
-        <div class="sc-arr-line" style="width:22px"></div>
-        <div class="sc-arr-line" style="width:14px"></div>
-      </div>
-    </a>
+      <a class="sc-link" href="https://www.softcatala.org/" target="_blank" rel="noopener">
+        <div class="sc-icon"><span class="sc-mono">SC</span></div>
+        <div class="sc-text">
+          <span class="sc-name">SoftCatalà</span>
+          <span class="sc-desc">Eines i recursos digitals en llengua catalana</span>
+        </div>
+        <div class="sc-arrow">
+          <div class="sc-dash" style="width:30px"></div>
+          <div class="sc-dash" style="width:20px"></div>
+          <div class="sc-dash" style="width:12px"></div>
+        </div>
+      </a>
+    </div>
   </div>
 
+  <!-- ── Footer ── -->
   <footer>
-    <p class="footer-quote">«La llengua és la clau que obre el cor d'un poble.»</p>
-    <span class="footer-mark">Català 1 &nbsp;·&nbsp; Primer Curs</span>
+    <p class="footer-q">«La llengua és la clau que obre el cor d'un poble.»</p>
+    <span class="footer-m">Català 1 &nbsp;·&nbsp; Primer Curs</span>
   </footer>
-</div>
+
+</div><!-- /wrapper -->
 
 <script>
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    CURSOR
-═══════════════════════════════════════ */
-const cur=document.getElementById('cursor'), cRng=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function animC(){rx+=(mx-rx)*.09;ry+=(my-ry)*.09;cRng.style.left=rx+'px';cRng.style.top=ry+'px';requestAnimationFrame(animC);})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.classList.add('hov');cRng.classList.add('hov');});
-  el.addEventListener('mouseleave',()=>{cur.classList.remove('hov');cRng.classList.remove('hov');});
+═══════════════════════════════════════════ */
+const cur = document.getElementById('cursor');
+const cRng = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+(function loop() {
+  rx += (mx - rx) * .09; ry += (my - ry) * .09;
+  cRng.style.left = rx + 'px'; cRng.style.top = ry + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.classList.add('hov'); cRng.classList.add('hov'); });
+  el.addEventListener('mouseleave', () => { cur.classList.remove('hov'); cRng.classList.remove('hov'); });
 });
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════
    DITES I REFRANYS
-═══════════════════════════════════════ */
-(function(){
-  const dites=[
-    {text:"Qui no s'arrisca, no pisca.",           meaning:"Qui no arrisca res, no pot guanyar res."},
-    {text:"De mica en mica s'omple la pica.",       meaning:"Poc a poc s'assoleix allò que sembla impossible."},
-    {text:"A mal temps, bona cara.",                meaning:"Cal afrontar les dificultats amb optimisme i serenor."},
-    {text:"El saber no ocupa lloc.",                meaning:"Aprendre mai no és un esforç perdut."},
-    {text:"Paraules i plomes, el vent les emporta.",meaning:"Les paraules dites sense escriure es poden oblidar."},
-    {text:"Qui molt s'excusa, s'acusa.",            meaning:"Defensar-se en excés sol ser senyal de culpa."},
-    {text:"A casa del ferrer, ganivet de fusta.",   meaning:"L'expert sovint descuida el seu propi camp."},
-    {text:"Fes el bé i no miris a qui.",            meaning:"L'acte generós no requereix reconeixement."},
-    {text:"Més val tard que mai.",                  meaning:"És millor fer una cosa amb retard que no fer-la."},
-    {text:"La por guarda la vinya.",                meaning:"La prudència i el respecte eviten molts problemes."},
-    {text:"No diguis blat fins que no sigui al sac.",meaning:"No comptis els guanys ni les victòries abans d'hora."},
-    {text:"L'ocasió fa el lladre.",                 meaning:"Les circumstàncies temptadores poden portar a actuar malament."},
-    {text:"Tots els camins duen a Roma.",           meaning:"Hi ha moltes maneres d'arribar al mateix resultat."},
-    {text:"Qui dia passa, any empeny.",             meaning:"El temps passa de pressa; val la pena aprofitar-lo."},
-    {text:"Qui no vulgui pols, que no vagi a l'era.",meaning:"Si no vols inconvenients, evita les situacions que els causen."},
+═══════════════════════════════════════════ */
+(function () {
+  const dites = [
+    { text: "Qui no s'arrisca, no pisca.",             meaning: "Qui no arrisca res, no pot guanyar res." },
+    { text: "De mica en mica s'omple la pica.",         meaning: "Poc a poc s'assoleix allò que sembla impossible." },
+    { text: "A mal temps, bona cara.",                  meaning: "Cal afrontar les dificultats amb optimisme i serenor." },
+    { text: "El saber no ocupa lloc.",                  meaning: "Aprendre mai no és un esforç perdut." },
+    { text: "Paraules i plomes, el vent les emporta.",  meaning: "Les paraules verbals es poden oblidar; millor escriure-les." },
+    { text: "Qui molt s'excusa, s'acusa.",              meaning: "Defensar-se en excés sol ser senyal de culpa." },
+    { text: "A casa del ferrer, ganivet de fusta.",     meaning: "L'expert sovint descuida el seu propi àmbit." },
+    { text: "Fes el bé i no miris a qui.",              meaning: "L'acte generós no requereix reconeixement." },
+    { text: "Més val tard que mai.",                    meaning: "És millor fer una cosa amb retard que no fer-la." },
+    { text: "La por guarda la vinya.",                  meaning: "La prudència i el respecte eviten molts problemes." },
+    { text: "No diguis blat fins que no sigui al sac.", meaning: "No comptis els guanys ni les victòries abans d'hora." },
+    { text: "L'ocasió fa el lladre.",                   meaning: "Les circumstàncies temptadores poden portar a actuar malament." },
+    { text: "Tots els camins duen a Roma.",             meaning: "Hi ha moltes maneres d'arribar al mateix resultat." },
+    { text: "Qui dia passa, any empeny.",               meaning: "El temps passa de pressa; val la pena aprofitar-lo." },
+    { text: "Qui no vulgui pols, que no vagi a l'era.", meaning: "Si no vols inconvenients, evita les situacions que els causen." },
   ];
 
-  let idx=Math.floor(Math.random()*dites.length);
-  const txtEl=document.getElementById('ditaText');
-  const meanEl=document.getElementById('ditaMeaning');
-  const ctrEl=document.getElementById('ditaCounter');
-  const btn=document.getElementById('ditaBtn');
+  let idx = Math.floor(Math.random() * dites.length);
+  const txtEl   = document.getElementById('ditaText');
+  const meanEl  = document.getElementById('ditaMeaning');
+  const countEl = document.getElementById('ditaCount');
+  const btn     = document.getElementById('ditaBtn');
 
-  function setDita(i){
-    txtEl.textContent=dites[i].text;
-    meanEl.textContent=dites[i].meaning;
-    ctrEl.textContent=(i+1)+' de '+dites.length;
+  function render(i) {
+    txtEl.textContent  = dites[i].text;
+    meanEl.textContent = dites[i].meaning;
+    countEl.textContent = (i + 1) + ' de ' + dites.length;
   }
 
-  function showDita(i){
-    txtEl.classList.add('fade');
-    meanEl.classList.add('fade');
-    setTimeout(()=>{
-      setDita(i);
-      txtEl.classList.remove('fade');
-      meanEl.classList.remove('fade');
-    },360);
+  function advance() {
+    txtEl.classList.add('out');
+    meanEl.classList.add('out');
+    setTimeout(() => {
+      idx = (idx + 1) % dites.length;
+      render(idx);
+      txtEl.classList.remove('out');
+      meanEl.classList.remove('out');
+    }, 340);
   }
 
-  setDita(idx); // set first without animation
-
-  btn.addEventListener('click',()=>{
-    idx=(idx+1)%dites.length;
-    showDita(idx);
-  });
+  render(idx);
+  btn.addEventListener('click', advance);
+  btn.addEventListener('touchend', e => { e.preventDefault(); advance(); });
 })();
 
-/* ═══════════════════════════════════════
-   SWORD SOUND ON GAME IMAGE HOVER
-═══════════════════════════════════════ */
-(function(){
-  let audioCtx=null;
-  function playSwordSound(){
-    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-    if(audioCtx.state==='suspended') audioCtx.resume();
-    const ctx=audioCtx, now=ctx.currentTime;
+/* ═══════════════════════════════════════════
+   ELEGANT SWORD SOUND  (crystalline, refined)
+═══════════════════════════════════════════ */
+(function () {
+  let ctx = null;
 
-    const master=ctx.createGain();
-    master.gain.value=0.55;
+  function play() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+
+    // Master — quiet and refined
+    const master = ctx.createGain();
+    master.gain.value = 0.20;
     master.connect(ctx.destination);
 
-    // 1) SWOOSH
-    const swooshLen=ctx.sampleRate*0.32;
-    const swooshBuf=ctx.createBuffer(1,swooshLen,ctx.sampleRate);
-    const sd=swooshBuf.getChannelData(0);
-    for(let i=0;i<swooshLen;i++){
-      const t=i/swooshLen;
-      sd[i]=(Math.random()*2-1)*Math.sin(Math.PI*t)*Math.pow(1-t,1.2);
+    // 1) Soft draw — whisper of a blade, very subtle
+    const swLen = ctx.sampleRate * 0.18;
+    const swBuf = ctx.createBuffer(1, swLen, ctx.sampleRate);
+    const swD   = swBuf.getChannelData(0);
+    for (let i = 0; i < swLen; i++) {
+      const t = i / swLen;
+      swD[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * t), 1.8);
     }
-    const swoosh=ctx.createBufferSource();
-    swoosh.buffer=swooshBuf;
-    const lp=ctx.createBiquadFilter();
-    lp.type='bandpass';
-    lp.frequency.setValueAtTime(600,now);
-    lp.frequency.exponentialRampToValueAtTime(4800,now+0.14);
-    lp.Q.value=0.7;
-    const sg=ctx.createGain();
-    sg.gain.setValueAtTime(0.9,now);
-    sg.gain.exponentialRampToValueAtTime(0.001,now+0.32);
-    swoosh.connect(lp).connect(sg).connect(master);
-    swoosh.start(now); swoosh.stop(now+0.32);
+    const swSrc = ctx.createBufferSource(); swSrc.buffer = swBuf;
+    const swBP  = ctx.createBiquadFilter();
+    swBP.type = 'bandpass';
+    swBP.frequency.setValueAtTime(900, now);
+    swBP.frequency.exponentialRampToValueAtTime(7000, now + 0.15);
+    swBP.Q.value = 0.55;
+    const swG = ctx.createGain();
+    swG.gain.setValueAtTime(0.28, now);
+    swG.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    swSrc.connect(swBP); swBP.connect(swG); swG.connect(master);
+    swSrc.start(now); swSrc.stop(now + 0.18);
 
-    // 2) CLANG
-    [900,1340,2100,3200].forEach((freq,i)=>{
-      const o=ctx.createOscillator();
-      o.type='sawtooth';
-      o.frequency.setValueAtTime(freq*(1+i*0.003),now+0.11);
-      o.frequency.exponentialRampToValueAtTime(freq*0.55,now+0.55);
-      const og=ctx.createGain();
-      og.gain.setValueAtTime(0.18/(i+1),now+0.11);
-      og.gain.exponentialRampToValueAtTime(0.0001,now+0.55);
-      const bp2=ctx.createBiquadFilter();
-      bp2.type='peaking'; bp2.frequency.value=freq; bp2.gain.value=8; bp2.Q.value=4;
-      o.connect(bp2).connect(og).connect(master);
-      o.start(now+0.11); o.stop(now+0.6);
+    // 2) Crystal bell — pure sine harmonics (C5 series), soft attack, long decay
+    [[523.25, 0.14, 0.18],
+     [1046.5, 0.16, 0.12],
+     [1568.0, 0.18, 0.07],
+     [2093.0, 0.20, 0.04]].forEach(([freq, delay, vol]) => {
+      const o = ctx.createOscillator();
+      o.type = 'sine'; o.frequency.value = freq;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, now + delay);
+      g.gain.linearRampToValueAtTime(vol, now + delay + 0.010);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.1);
+      o.connect(g); g.connect(master);
+      o.start(now + delay); o.stop(now + delay + 1.2);
     });
-
-    // 3) HIGH SHIMMER
-    const ring=ctx.createOscillator();
-    ring.type='sine';
-    ring.frequency.setValueAtTime(5800,now+0.12);
-    ring.frequency.exponentialRampToValueAtTime(3200,now+0.7);
-    const rg=ctx.createGain();
-    rg.gain.setValueAtTime(0.06,now+0.12);
-    rg.gain.exponentialRampToValueAtTime(0.0001,now+0.7);
-    ring.connect(rg).connect(master);
-    ring.start(now+0.12); ring.stop(now+0.7);
   }
-  const gameLink=document.querySelector('.shield-link');
-  if(gameLink) gameLink.addEventListener('mouseenter',playSwordSound);
+
+  const gameLink = document.querySelector('.game-link');
+  if (gameLink) gameLink.addEventListener('mouseenter', play);
 })();
 
-/* ═══════════════════════════════════════
-   COSMOS CANVAS
-   Layers:
-   1. Deep nebula clouds (slow drifting coloured fog)
-   2. Three parallax star layers
-   3. Shooting stars / meteors
-   4. Aurora ribbon at top
-═══════════════════════════════════════ */
-(function(){
-  const cv=document.getElementById('cosmos');
-  const ctx=cv.getContext('2d');
-  let W,H;
-  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
-  resize(); window.addEventListener('resize',resize);
+/* ═══════════════════════════════════════════
+   COSMOS  —  nebulae · stars · aurora · meteors
+═══════════════════════════════════════════ */
+(function () {
+  const cv  = document.getElementById('cosmos');
+  const ctx = cv.getContext('2d');
+  let W, H;
+  function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
 
-  /* ── Stars: 3 depth layers ── */
-  const starLayers=[];
-  const layerDefs=[
-    {count:220, rMin:.2, rMax:.8,  speedX:.004, speedY:.002, maxOp:.55, color:'255,255,255'},
-    {count:80,  rMin:.5, rMax:1.4, speedX:.009, speedY:.004, maxOp:.7,  color:'240,220,180'},
-    {count:30,  rMin:1,  rMax:2.2, speedX:.018, speedY:.007, maxOp:.9,  color:'210,195,255'},
-  ];
-  layerDefs.forEach(def=>{
-    const stars=[];
-    for(let i=0;i<def.count;i++){
-      stars.push({
-        x:Math.random(),y:Math.random(),
-        r:Math.random()*(def.rMax-def.rMin)+def.rMin,
-        phase:Math.random()*Math.PI*2,
-        phaseSpeed:Math.random()*.012+.004,
-        maxOp:Math.random()*def.maxOp*.6+def.maxOp*.3,
-      });
-    }
-    starLayers.push({...def,stars});
+  /* Stars — 3 parallax layers */
+  const layers = [
+    { n:220, rMin:.2, rMax:.8,  sx:.004, sy:.002, op:.55, col:'255,255,255' },
+    { n:80,  rMin:.5, rMax:1.4, sx:.009, sy:.004, op:.70, col:'240,220,180' },
+    { n:30,  rMin:1,  rMax:2.2, sx:.018, sy:.007, op:.90, col:'210,195,255' },
+  ].map(def => {
+    const stars = Array.from({ length: def.n }, () => ({
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * (def.rMax - def.rMin) + def.rMin,
+      ph: Math.random() * Math.PI * 2,
+      ps: Math.random() * .012 + .004,
+      mo: Math.random() * def.op * .6 + def.op * .3,
+    }));
+    return { ...def, stars };
   });
 
-  /* ── Nebula clouds ── */
-  const nebulae=[
-    {x:.15,y:.12,rx:.38,ry:.22, r:255,g:60,b:60,   op:.055, speed:.00004, phase:0},
-    {x:.80,y:.18,rx:.30,ry:.18, r:100,g:60,b:255,  op:.045, speed:.00003, phase:1.2},
-    {x:.50,y:.75,rx:.50,ry:.20, r:255,g:200,b:60,  op:.03,  speed:.00005, phase:2.5},
-    {x:.20,y:.65,rx:.25,ry:.20, r:60,g:150,b:255,  op:.04,  speed:.00004, phase:4},
-    {x:.85,y:.70,rx:.28,ry:.18, r:200,g:80,b:255,  op:.04,  speed:.00003, phase:0.7},
+  /* Nebulae */
+  const neb = [
+    { x:.15, y:.12, rx:.38, ry:.22, r:255, g:60,  b:60,  op:.052, sp:.00004, ph:0   },
+    { x:.80, y:.18, rx:.30, ry:.18, r:100, g:60,  b:255, op:.042, sp:.00003, ph:1.2 },
+    { x:.50, y:.75, rx:.50, ry:.20, r:255, g:200, b:60,  op:.028, sp:.00005, ph:2.5 },
+    { x:.20, y:.65, rx:.25, ry:.20, r:60,  g:150, b:255, op:.038, sp:.00004, ph:4   },
+    { x:.85, y:.70, rx:.28, ry:.18, r:200, g:80,  b:255, op:.038, sp:.00003, ph:0.7 },
   ];
 
-  /* ── Shooting stars ── */
-  const shooters=[];
-  function spawnShooter(){
-    const angle=Math.PI/6+Math.random()*Math.PI/8;
-    const speed=W*(.007+Math.random()*.009);
-    const len=W*(.08+Math.random()*.12);
-    shooters.push({
-      x:Math.random()*W*.8,
-      y:Math.random()*H*.5,
-      vx:Math.cos(angle)*speed,
-      vy:Math.sin(angle)*speed,
-      len, alpha:1, life:1,
-      trail:[], maxTrail:18,
-      width:.8+Math.random()*1.2,
+  /* Shooting stars */
+  const shots = [];
+  function spawn() {
+    const a = Math.PI / 6 + Math.random() * Math.PI / 8;
+    const sp = W * (.007 + Math.random() * .009);
+    shots.push({
+      x: Math.random() * W * .8, y: Math.random() * H * .5,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+      life: 1, trail: [], mT: 18, w: .8 + Math.random() * 1.2,
     });
   }
 
-  /* ── Aurora ribbons ── */
-  const auroraPoints=12;
-  const aurora={
-    y: H*.10,
-    heights:Array.from({length:auroraPoints},()=>Math.random()*60-30),
-    speeds: Array.from({length:auroraPoints},()=>(.003+Math.random()*.006)*(Math.random()<.5?1:-1)),
-    phases: Array.from({length:auroraPoints},()=>Math.random()*Math.PI*2),
+  /* Aurora */
+  const AP = 12;
+  const aur = {
+    y: H * .10,
+    h: Array.from({ length: AP }, () => Math.random() * 60 - 30),
+    sp: Array.from({ length: AP }, () => (.003 + Math.random() * .006) * (Math.random() < .5 ? 1 : -1)),
+    ph: Array.from({ length: AP }, () => Math.random() * Math.PI * 2),
   };
 
-  let t=0, lastShooter=0;
+  let t = 0, lastShot = 0;
 
-  function drawNebulae(){
-    nebulae.forEach(n=>{
-      const cx=(n.x+Math.sin(t*n.speed*1000)*0.03)*W;
-      const cy=(n.y+Math.cos(t*n.speed*700)*0.02)*H;
-      const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,n.rx*W);
-      grd.addColorStop(0,`rgba(${n.r},${n.g},${n.b},${n.op})`);
-      grd.addColorStop(.5,`rgba(${n.r},${n.g},${n.b},${n.op*.4})`);
-      grd.addColorStop(1,`rgba(${n.r},${n.g},${n.b},0)`);
+  function drawNeb() {
+    neb.forEach(n => {
+      const cx = (n.x + Math.sin(t * n.sp * 1000) * .03) * W;
+      const cy = (n.y + Math.cos(t * n.sp * 700)  * .02) * H;
+      const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, n.rx * W);
+      gr.addColorStop(0,   `rgba(${n.r},${n.g},${n.b},${n.op})`);
+      gr.addColorStop(.5,  `rgba(${n.r},${n.g},${n.b},${n.op * .4})`);
+      gr.addColorStop(1,   `rgba(${n.r},${n.g},${n.b},0)`);
       ctx.save();
-      ctx.scale(1, n.ry/n.rx);
-      ctx.fillStyle=grd;
+      ctx.scale(1, n.ry / n.rx);
+      ctx.fillStyle = gr;
       ctx.beginPath();
-      ctx.arc(cx,cy*n.rx/n.ry,n.rx*W,0,Math.PI*2);
+      ctx.arc(cx, cy * n.rx / n.ry, n.rx * W, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     });
   }
 
-  function drawStars(){
-    starLayers.forEach(layer=>{
-      layer.stars.forEach(s=>{
-        s.phase+=s.phaseSpeed;
-        const op=s.maxOp*(.5+.5*Math.sin(s.phase));
-        const sx=((s.x+t*layer.speedX)%1)*W;
-        const sy=((s.y+t*layer.speedY)%1)*H;
-        ctx.beginPath();
-        ctx.arc(sx,sy,s.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(${layer.color},${op})`;
-        ctx.fill();
-      });
-    });
-  }
-
-  function drawShooters(){
-    for(let i=shooters.length-1;i>=0;i--){
-      const s=shooters[i];
-      s.trail.unshift({x:s.x,y:s.y});
-      if(s.trail.length>s.maxTrail) s.trail.pop();
-      s.x+=s.vx; s.y+=s.vy;
-      s.life-=.022;
-      if(s.life<=0||s.x>W+200||s.y>H+200){shooters.splice(i,1);continue;}
-      const headGrd=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.width*5);
-      headGrd.addColorStop(0,`rgba(255,255,240,${s.life})`);
-      headGrd.addColorStop(.4,`rgba(220,200,140,${s.life*.5})`);
-      headGrd.addColorStop(1,'rgba(255,255,200,0)');
-      ctx.fillStyle=headGrd;
+  function drawStars() {
+    layers.forEach(l => l.stars.forEach(s => {
+      s.ph += s.ps;
+      const op = s.mo * (.5 + .5 * Math.sin(s.ph));
+      const sx = ((s.x + t * l.sx) % 1) * W;
+      const sy = ((s.y + t * l.sy) % 1) * H;
       ctx.beginPath();
-      ctx.arc(s.x,s.y,s.width*5,0,Math.PI*2);
+      ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${l.col},${op})`;
       ctx.fill();
-      for(let j=0;j<s.trail.length-1;j++){
-        const p0=s.trail[j], p1=s.trail[j+1];
-        const frac=1-(j/s.trail.length);
-        ctx.beginPath();
-        ctx.moveTo(p0.x,p0.y);
-        ctx.lineTo(p1.x,p1.y);
-        ctx.strokeStyle=`rgba(255,245,200,${frac*s.life*.7})`;
-        ctx.lineWidth=s.width*(1-j/s.trail.length);
-        ctx.stroke();
+    }));
+  }
+
+  function drawShots() {
+    for (let i = shots.length - 1; i >= 0; i--) {
+      const s = shots[i];
+      s.trail.unshift({ x: s.x, y: s.y });
+      if (s.trail.length > s.mT) s.trail.pop();
+      s.x += s.vx; s.y += s.vy; s.life -= .022;
+      if (s.life <= 0 || s.x > W + 200 || s.y > H + 200) { shots.splice(i, 1); continue; }
+      const hg = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.w * 5);
+      hg.addColorStop(0,   `rgba(255,255,240,${s.life})`);
+      hg.addColorStop(.4,  `rgba(220,200,140,${s.life * .5})`);
+      hg.addColorStop(1,   'rgba(255,255,200,0)');
+      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(s.x, s.y, s.w * 5, 0, Math.PI * 2); ctx.fill();
+      for (let j = 0; j < s.trail.length - 1; j++) {
+        const p0 = s.trail[j], p1 = s.trail[j + 1], f = 1 - j / s.trail.length;
+        ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
+        ctx.strokeStyle = `rgba(255,245,200,${f * s.life * .7})`;
+        ctx.lineWidth = s.w * (1 - j / s.trail.length); ctx.stroke();
       }
     }
   }
 
-  function drawAurora(){
-    aurora.phases=aurora.phases.map((p,i)=>p+aurora.speeds[i]);
-    const pts=aurora.phases.map((p,i)=>{
-      const x=(i/(auroraPoints-1))*W;
-      const y=aurora.y+Math.sin(p)*55+aurora.heights[i];
-      return {x,y};
+  function drawAurora() {
+    aur.ph = aur.ph.map((p, i) => p + aur.sp[i]);
+    const pts = aur.ph.map((p, i) => ({
+      x: (i / (AP - 1)) * W,
+      y: aur.y + Math.sin(p) * 55 + aur.h[i],
+    }));
+    const th = 90;
+    [[0,'rgba(0,255,160,0)','rgba(0,220,130,.05)','rgba(80,180,255,.036)','rgba(0,255,160,0)'],
+     [1,'rgba(200,0,255,0)','rgba(160,0,220,.036)','rgba(200,0,255,.022)','rgba(200,0,255,0)'],
+     [2,'rgba(255,220,50,0)','rgba(255,200,0,.025)','rgba(255,220,50,0)','rgba(255,220,50,0)']
+    ].forEach(([pass, c0, c1, c2, c3]) => {
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length - 1; i++) {
+        const cx = (pts[i].x + pts[i + 1].x) / 2, cy = (pts[i].y + pts[i + 1].y) / 2;
+        ctx.quadraticCurveTo(pts[i].x, pts[i].y, cx, cy);
+      }
+      ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
+      const gr = ctx.createLinearGradient(0, aur.y - th, 0, aur.y + th * 1.5);
+      [c0, c1, c2, c3].forEach((c, idx) => gr.addColorStop(idx / 3, c));
+      ctx.strokeStyle = gr; ctx.lineWidth = th * (pass === 0 ? 1 : .7); ctx.stroke();
     });
-    const thickness=90;
-    for(let pass=0;pass<3;pass++){
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x,pts[0].y);
-      for(let i=1;i<pts.length-1;i++){
-        const cx=(pts[i].x+pts[i+1].x)/2;
-        const cy=(pts[i].y+pts[i+1].y)/2;
-        ctx.quadraticCurveTo(pts[i].x,pts[i].y,cx,cy);
-      }
-      ctx.lineTo(pts[pts.length-1].x,pts[pts.length-1].y);
-      const waveGrd=ctx.createLinearGradient(0,aurora.y-thickness,0,aurora.y+thickness*1.5);
-      if(pass===0){
-        waveGrd.addColorStop(0,'rgba(0,255,160,0)');
-        waveGrd.addColorStop(.35,'rgba(0,220,130,.055)');
-        waveGrd.addColorStop(.6,'rgba(80,180,255,.04)');
-        waveGrd.addColorStop(1,'rgba(0,255,160,0)');
-      } else if(pass===1){
-        waveGrd.addColorStop(0,'rgba(200,0,255,0)');
-        waveGrd.addColorStop(.4,'rgba(160,0,220,.04)');
-        waveGrd.addColorStop(.7,'rgba(200,0,255,.025)');
-        waveGrd.addColorStop(1,'rgba(200,0,255,0)');
-      } else {
-        waveGrd.addColorStop(0,'rgba(255,220,50,0)');
-        waveGrd.addColorStop(.3,'rgba(255,200,0,.028)');
-        waveGrd.addColorStop(1,'rgba(255,220,50,0)');
-      }
-      ctx.strokeStyle=waveGrd;
-      ctx.lineWidth=thickness*(pass===0?1:.7);
-      ctx.stroke();
-    }
   }
 
-  function frame(){
-    ctx.clearRect(0,0,W,H);
-    ctx.globalCompositeOperation='screen';
-    drawNebulae();
-    ctx.globalCompositeOperation='source-over';
-    drawStars();
-    ctx.globalCompositeOperation='screen';
-    drawAurora();
-    ctx.globalCompositeOperation='screen';
-    if(t-lastShooter>2.5+Math.random()*4){ spawnShooter(); lastShooter=t; }
-    drawShooters();
-    ctx.globalCompositeOperation='source-over';
-    t+=.016;
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'screen'; drawNeb();
+    ctx.globalCompositeOperation = 'source-over'; drawStars();
+    ctx.globalCompositeOperation = 'screen'; drawAurora();
+    ctx.globalCompositeOperation = 'screen';
+    if (t - lastShot > 2.5 + Math.random() * 4) { spawn(); lastShot = t; }
+    drawShots();
+    ctx.globalCompositeOperation = 'source-over';
+    t += .016;
     requestAnimationFrame(frame);
   }
   frame();
