@@ -50,15 +50,13 @@
     /* ── Wrapper ── */
     .wrapper{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:3rem 2rem;max-width:700px;width:100%;}
 
-    /* ── Portada image ── */
-    .portada-wrap {
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 1s 1.6s cubic-bezier(.22,1,.36,1) forwards;
-    }
+    /* ── Portada + shield row ── */
+    .portada-game-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.5rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp 1s 1.6s cubic-bezier(.22,1,.36,1) forwards;width:100%;}
+    @media(max-width:560px){.portada-game-row{flex-direction:column;gap:2rem;}}
+    .portada-wrap{flex-shrink:0;}
     .portada-img {
-      width: 320px;
-      max-width: 90vw;
+      width: 230px;
+      max-width: 42vw;
       border-radius: 4px;
       display: block;
       box-shadow:
@@ -66,6 +64,7 @@
         0 12px 50px rgba(0,0,0,.7),
         0 0 60px rgba(201,168,76,.06);
     }
+    @media(max-width:560px){.portada-img{width:260px;max-width:80vw;}}
 
     /* ── Header text ── */
     .top-rule{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--gold-dk));transform:scaleY(0);transform-origin:top;animation:growDown .7s 1s ease forwards;margin-bottom:1.6rem;}
@@ -113,29 +112,23 @@
     .dossier-card:hover .cta-line{width:80px;background:linear-gradient(to right,var(--gold),transparent);}
     .dossier-card:hover .cta-line::after{border-color:var(--gold-lt);}
 
-    /* ── Ornament separator ── */
-    .sep-ornament{display:flex;align-items:center;gap:.9rem;width:100%;max-width:360px;margin:3.5rem 0 3rem;opacity:0;animation:fadeUp .6s 1.9s ease forwards;}
-
     /* ── Shield game section ── */
-    .game-section{display:flex;flex-direction:column;align-items:center;opacity:0;animation:fadeUp 1s 2s cubic-bezier(.22,1,.36,1) forwards;}
-    .game-eyebrow{font-family:'Cinzel Decorative',serif;font-size:.62rem;letter-spacing:.55em;color:var(--crimson);text-transform:uppercase;margin-bottom:1.8rem;display:flex;align-items:center;gap:.7rem;}
-    .game-eyebrow::before,.game-eyebrow::after{content:'';width:28px;height:1px;background:linear-gradient(to right,transparent,rgba(184,0,0,.5));}
-    .game-eyebrow::after{background:linear-gradient(to left,transparent,rgba(184,0,0,.5));}
-    .shield-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1.6rem;cursor:none;}
-    .shield-wrap{position:relative;width:170px;filter:drop-shadow(0 4px 24px rgba(184,0,0,.35)) drop-shadow(0 0 8px rgba(201,168,76,.2));transition:filter .45s,transform .45s cubic-bezier(.22,1,.36,1);}
-    .shield-link:hover .shield-wrap{filter:drop-shadow(0 8px 48px rgba(184,0,0,.7)) drop-shadow(0 0 60px rgba(201,168,76,.35));transform:scale(1.09) translateY(-8px);}
+    .game-section{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+    .game-eyebrow{font-family:'Cinzel Decorative',serif;font-size:.58rem;letter-spacing:.48em;color:var(--gold-dk);text-transform:uppercase;margin-bottom:1.2rem;text-align:center;}
+    .shield-link{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:1.2rem;cursor:none;}
+    .shield-wrap{position:relative;width:140px;filter:drop-shadow(0 4px 20px rgba(201,168,76,.25)) drop-shadow(0 0 6px rgba(201,168,76,.1));transition:filter .45s,transform .45s cubic-bezier(.22,1,.36,1);}
+    .shield-link:hover .shield-wrap{filter:drop-shadow(0 8px 40px rgba(201,168,76,.55)) drop-shadow(0 0 50px rgba(240,213,133,.3));transform:scale(1.1) translateY(-8px);}
     .shield-svg{width:100%;display:block;}
-    /* Shield cross pulse on hover */
-    .shield-link:hover .shield-cross{animation:crossGlow .8s ease-in-out infinite alternate;}
-    @keyframes crossGlow{from{filter:brightness(1);}to{filter:brightness(1.3) drop-shadow(0 0 8px rgba(220,60,60,.8));}}
+    .shield-link:hover .shield-letter{animation:lGlow .9s ease-in-out infinite alternate;}
+    @keyframes lGlow{from{filter:brightness(1);}to{filter:brightness(1.4) drop-shadow(0 0 10px rgba(240,213,133,.9));}}
     .shield-text{text-align:center;}
-    .shield-title{font-family:'Cinzel Decorative',serif;font-size:1.15rem;letter-spacing:.04em;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 10px rgba(201,168,76,.2));margin-bottom:.4rem;}
-    .shield-subtitle{font-family:'IM Fell English',serif;font-style:italic;font-size:1.05rem;color:var(--muted-lt);margin-bottom:1rem;}
-    .shield-cta{display:inline-flex;align-items:center;gap:1rem;font-family:'Cinzel Decorative',serif;font-size:.65rem;letter-spacing:.42em;color:var(--gold-dk);text-transform:uppercase;transition:color .35s,gap .4s;}
-    .shield-link:hover .shield-cta{color:var(--gold-lt);gap:1.5rem;}
-    .shield-cta-line{width:40px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:width .45s cubic-bezier(.22,1,.36,1),background .35s;position:relative;}
-    .shield-cta-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:5px;height:5px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
-    .shield-link:hover .shield-cta-line{width:65px;background:linear-gradient(to right,var(--gold),transparent);}
+    .shield-title{font-family:'Cinzel Decorative',serif;font-size:1rem;letter-spacing:.04em;background:linear-gradient(110deg,var(--gold-lt) 0%,var(--gold) 60%,var(--gold-md) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 8px rgba(201,168,76,.2));margin-bottom:.3rem;}
+    .shield-subtitle{font-family:'IM Fell English',serif;font-style:italic;font-size:.95rem;color:var(--muted-lt);margin-bottom:.8rem;}
+    .shield-cta{display:inline-flex;align-items:center;gap:.8rem;font-family:'Cinzel Decorative',serif;font-size:.6rem;letter-spacing:.42em;color:var(--gold-dk);text-transform:uppercase;transition:color .35s,gap .4s;}
+    .shield-link:hover .shield-cta{color:var(--gold-lt);gap:1.2rem;}
+    .shield-cta-line{width:30px;height:1px;background:linear-gradient(to right,var(--gold-dk),transparent);transition:width .45s cubic-bezier(.22,1,.36,1),background .35s;position:relative;}
+    .shield-cta-line::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%) rotate(45deg);width:4px;height:4px;border-right:1px solid var(--gold-dk);border-top:1px solid var(--gold-dk);transition:border-color .35s;}
+    .shield-link:hover .shield-cta-line{width:50px;background:linear-gradient(to right,var(--gold),transparent);}
     .shield-link:hover .shield-cta-line::after{border-color:var(--gold-lt);}
 
     /* ── Footer ── */
@@ -174,8 +167,68 @@
     <div class="orn-line"></div>
   </div>
 
-  <div class="portada-wrap">
-    <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
+  <div class="portada-game-row">
+    <div class="portada-wrap">
+      <img src="portada.png" alt="Portada Català 1" class="portada-img"/>
+    </div>
+    <div class="game-section">
+      <p class="game-eyebrow">Videojoc</p>
+      <a class="shield-link" href="sant_jordi_v3.html">
+        <div class="shield-wrap">
+          <svg class="shield-svg" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="sc">
+                <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z"/>
+              </clipPath>
+              <radialGradient id="sbg" cx="45%" cy="28%" r="80%">
+                <stop offset="0%" stop-color="#1e1630"/>
+                <stop offset="100%" stop-color="#07050e"/>
+              </radialGradient>
+              <linearGradient id="lgrd" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f0d585"/>
+                <stop offset="45%" stop-color="#c9a84c"/>
+                <stop offset="100%" stop-color="#dbb95a"/>
+              </linearGradient>
+            </defs>
+            <!-- Drop shadow -->
+            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="rgba(0,0,0,0.55)" transform="translate(2,3)"/>
+            <!-- Shield fill -->
+            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="url(#sbg)"/>
+            <!-- Inner glow -->
+            <ellipse cx="50" cy="52" rx="32" ry="36" fill="rgba(201,168,76,0.055)" clip-path="url(#sc)"/>
+            <!-- Decorative top lines -->
+            <line x1="16" y1="23" x2="38" y2="23" stroke="rgba(201,168,76,0.3)" stroke-width="0.6"/>
+            <line x1="62" y1="23" x2="84" y2="23" stroke="rgba(201,168,76,0.3)" stroke-width="0.6"/>
+            <circle cx="13" cy="23" r="1.3" fill="rgba(201,168,76,0.45)"/>
+            <circle cx="87" cy="23" r="1.3" fill="rgba(201,168,76,0.45)"/>
+            <circle cx="50" cy="20" r="1.8" fill="rgba(201,168,76,0.55)"/>
+            <!-- The ornate "L" -->
+            <text class="shield-letter" x="51" y="83"
+              font-family="'Cinzel Decorative', serif"
+              font-size="64" font-weight="900"
+              text-anchor="middle"
+              fill="url(#lgrd)"
+              clip-path="url(#sc)">L</text>
+            <!-- Decorative bottom lines -->
+            <line x1="22" y1="92" x2="40" y2="92" stroke="rgba(201,168,76,0.25)" stroke-width="0.6" clip-path="url(#sc)"/>
+            <line x1="60" y1="92" x2="78" y2="92" stroke="rgba(201,168,76,0.25)" stroke-width="0.6" clip-path="url(#sc)"/>
+            <circle cx="50" cy="92" r="1.4" fill="rgba(201,168,76,0.35)" clip-path="url(#sc)"/>
+            <!-- Outer gold border -->
+            <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
+            <!-- Inner border -->
+            <path d="M11 9 L89 9 L89 60 Q89 87 50 103 Q11 87 11 60 Z" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+            <!-- Crown ornament top -->
+            <circle cx="50" cy="5" r="2.8" fill="#c9a84c"/>
+            <circle cx="50" cy="5" r="1.3" fill="#07050e"/>
+          </svg>
+        </div>
+        <div class="shield-text">
+          <div class="shield-title">Sant Jordi i els Dracs</div>
+          <div class="shield-subtitle">del Català</div>
+          <div class="shield-cta"><div class="shield-cta-line"></div>Juga ara<div class="shield-cta-line" style="transform:scaleX(-1)"></div></div>
+        </div>
+      </a>
+    </div>
   </div>
 
   <a class="dossier-card" href="dossier-catala.html">
@@ -190,76 +243,6 @@
     <p class="card-desc">Tots els continguts, exercicis i recursos del curs reunits en un únic document de referència imprescindible.</p>
     <div class="card-cta"><div class="cta-line"></div>Accedeix al dossier</div>
   </a>
-
-  <!-- Separator -->
-  <div class="sep-ornament">
-    <div class="orn-line"></div>
-    <div class="orn-center">
-      <div class="orn-diamond sm"></div>
-      <div class="orn-diamond"></div>
-      <div class="orn-diamond sm"></div>
-    </div>
-    <div class="orn-line"></div>
-  </div>
-
-  <!-- Game Shield -->
-  <div class="game-section">
-    <p class="game-eyebrow">Videojoc de Repàs</p>
-    <a class="shield-link" href="sant_jordi_v3.html">
-      <div class="shield-wrap">
-        <svg class="shield-svg" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="sc">
-              <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z"/>
-            </clipPath>
-            <radialGradient id="shieldBg" cx="50%" cy="35%" r="65%">
-              <stop offset="0%" stop-color="#f5e8c8"/>
-              <stop offset="100%" stop-color="#d4c09a"/>
-            </radialGradient>
-            <radialGradient id="crossGrad" cx="50%" cy="40%" r="70%">
-              <stop offset="0%" stop-color="#cc1111"/>
-              <stop offset="100%" stop-color="#8a0000"/>
-            </radialGradient>
-            <filter id="innerShadow" x="-10%" y="-10%" width="120%" height="120%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.5)"/>
-            </filter>
-          </defs>
-          <!-- Shield drop shadow -->
-          <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="rgba(0,0,0,0.45)" transform="translate(2,3)"/>
-          <!-- Shield base (cream/parchment) -->
-          <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="url(#shieldBg)" clip-path="url(#sc)"/>
-          <!-- Subtle texture overlay -->
-          <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="rgba(180,140,80,0.08)" clip-path="url(#sc)"/>
-          <!-- Cross of Sant Jordi -->
-          <g class="shield-cross" clip-path="url(#sc)">
-            <!-- Horizontal arm -->
-            <rect x="6" y="46" width="88" height="16" fill="url(#crossGrad)"/>
-            <!-- Vertical arm -->
-            <rect x="44" y="4" width="12" height="104" fill="url(#crossGrad)"/>
-            <!-- Cross highlight (top edge) -->
-            <rect x="6" y="46" width="88" height="2" fill="rgba(255,120,120,0.25)"/>
-            <rect x="44" y="4" width="2" height="104" fill="rgba(255,120,120,0.25)"/>
-          </g>
-          <!-- Outer gold border -->
-          <path d="M6 4 L94 4 L94 60 Q94 92 50 108 Q6 92 6 60 Z" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
-          <!-- Inner gold border -->
-          <path d="M9 7 L91 7 L91 60 Q91 89 50 105 Q9 89 9 60 Z" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="1"/>
-          <!-- Corner ornament top-left -->
-          <circle cx="12" cy="12" r="2" fill="none" stroke="#c9a84c" stroke-width="1"/>
-          <!-- Corner ornament top-right -->
-          <circle cx="88" cy="12" r="2" fill="none" stroke="#c9a84c" stroke-width="1"/>
-          <!-- Small fleur-de-lis top center -->
-          <circle cx="50" cy="4" r="2.5" fill="#c9a84c"/>
-          <circle cx="50" cy="4" r="1.2" fill="#06060d"/>
-        </svg>
-      </div>
-      <div class="shield-text">
-        <div class="shield-title">Sant Jordi i els Dracs</div>
-        <div class="shield-subtitle">del Català</div>
-        <div class="shield-cta"><div class="shield-cta-line"></div>Juga ara<div class="shield-cta-line" style="transform:scaleX(-1)"></div></div>
-      </div>
-    </a>
-  </div>
 
   <footer>
     <p class="footer-quote">«La llengua és la clau que obre el cor d'un poble.»</p>
